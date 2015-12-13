@@ -83,6 +83,8 @@ namespace NEEDSIM
                     {
                         SetUpAgent();
                     }
+
+                    StartCoroutine(ThrottledUpdate());
                 }
             }
         }
@@ -204,10 +206,9 @@ namespace NEEDSIM
 
             return true;
         }
-
-        void Update()
+        IEnumerator ThrottledUpdate()
         {
-            if (NEEDSIMRoot.Instance.isSimulationInitialized && AffordanceTreeNode != null)
+            while(NEEDSIMRoot.Instance.isSimulationInitialized && AffordanceTreeNode != null)
             {
                 //Positions are updated in case the object was moved at runtime.
                 foreach (Slot slot in AffordanceTreeNode.Slots)
@@ -230,11 +231,10 @@ namespace NEEDSIM
                         planDemo.Update();
                     }
                 }
+                yield return new WaitForSeconds(1f);
             }
-            else if (AffordanceTreeNode == null)
-            {
-                Debug.LogWarning("AffordanceTreeNode not yet set up.");
-            }
+
+            Debug.LogWarning("AffordanceTreeNode not yet set up.");
         }
 
         /// <summary>

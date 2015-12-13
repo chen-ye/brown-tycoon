@@ -87,6 +87,8 @@ namespace NEEDSIM
                     BuildFlatAffordanceTreeFromScene();
                     buildAffordanceTreeFromScene = false;
                 }
+
+                StartCoroutine(ThrottledUpdate());
             }
         }
 
@@ -162,33 +164,42 @@ namespace NEEDSIM
             }
         }
 
-        void Update()
-        {
-            PrintSimulationDebugLog = configuration.PrintSimulationDebugLog;
-            if (PrintSimulationDebugLog)
-            {
-                PrintSimulationDebugLogToConsole();
-                PrintSimulationDebugLog = false;
-            }
+        //void Update()
+        //{
+        //    PrintSimulationDebugLog = configuration.PrintSimulationDebugLog;
+        //    if (PrintSimulationDebugLog)
+        //    {
+        //        PrintSimulationDebugLogToConsole();
+        //        PrintSimulationDebugLog = false;
+        //    }
 
-            if (isSimulationInitialized)
+        //    if (isSimulationInitialized)
+        //    {
+        //        if (root == null)
+        //        {
+        //            Debug.LogError("Root is zero.");
+        //        }
+        //        else
+        //        {
+        //            if (nextUpdate == 0)
+        //            {
+        //                Manager.Instance.UpdateAffordanceTree();
+        //                nextUpdate = 15; //If you do not want to update every frame you can put a higher value here. It might be necessary to adjust agent control accordingly.
+        //            }
+        //            else
+        //            {
+        //                nextUpdate--;
+        //            }
+        //        }
+        //    }
+        //}
+
+        IEnumerator ThrottledUpdate()
+        {
+            while (isSimulationInitialized)
             {
-                if (root == null)
-                {
-                    Debug.LogError("Root is zero.");
-                }
-                else
-                {
-                    if (nextUpdate == 0)
-                    {
-                        Manager.Instance.UpdateAffordanceTree();
-                        nextUpdate = 0; //If you do not want to update every frame you can put a higher value here. It might be necessary to adjust agent control accordingly.
-                    }
-                    else
-                    {
-                        nextUpdate--;
-                    }
-                }
+                Manager.Instance.UpdateAffordanceTree();
+                yield return new WaitForSeconds(.9f);
             }
         }
 

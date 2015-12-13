@@ -11,6 +11,33 @@
       "y": 40.5
          },
     {
+      "key": "zcd",
+      "type": "dorm",
+      "width": 0.05,
+      "length": 0.02,
+      "rotation": 180,
+      "x": -20.0,
+      "y": 50.0
+         },
+    {
+      "key": "sda",
+      "type": "dorm",
+      "width": 0.05,
+      "length": 0.02,
+      "rotation": 180,
+      "x": -20.0,
+      "y": 70.0
+         },
+    {
+      "key": "sda",
+      "type": "dorm",
+      "width": 0.05,
+      "length": 0.02,
+      "rotation": 180,
+      "x": -20.0,
+      "y": 90.0
+         },
+    {
       "key": "dfh",
       "type": "dorm",
       "width": 0.05,
