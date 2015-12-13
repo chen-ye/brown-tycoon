@@ -1,0 +1,1574 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Simulation</name>
+    </assembly>
+    <members>
+        <member name="T:Simulation.Affordance">
+            <summary>
+            An affordance is the opportunity granted by an object to an agent to perform an action. 
+            </summary>
+        </member>
+        <member name="P:Simulation.Affordance.InteractionStartedThisFrame">
+            <summary>
+            Whether the interaction was started in the current frame
+            </summary>
+        </member>
+        <member name="P:Simulation.Affordance.CurrentInteraction">
+            <summary>
+            This will return null if the remaining duration is 0.
+            </summary>
+        </member>
+        <member name="P:Simulation.Affordance.HasInteraction">
+            <summary>
+            Whether an actual Interaction is available behind this affordance.
+            </summary>
+        </member>
+        <member name="M:Simulation.Affordance.ProlongLastInteraction">
+            <summary>
+            Prolong the last interaction. Only available if interaction already finished, will then restart without setting the frame the animation started in.
+            </summary>
+            <returns>NoProlongableInteraction if none is found. The result of StartInteraction otherwise.</returns>
+        </member>
+        <member name="M:Simulation.Affordance.StartInteraction(System.String)">
+            <summary>
+            Start Interaction by name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.Affordance.StartRandomInteraction">
+            <summary>
+            From all interactions registered at this affordance, pick one randomly
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.Affordance.AddInteraction(Simulation.Interaction)">
+            <summary>
+            Make an interaction available at this affordance
+            </summary>
+            <param name="interaction">The interaction you want to add.</param>
+        </member>
+        <member name="T:Simulation.AffordanceTreeNode">
+            <summary>
+            Each game object managed by the simulation has an Affordance Tree Node. It manages scope, affordances, slots, and, if the affordance tree is an active part of the simulation, its goals and levels of satisfaction.
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.Affordance">
+            <summary>
+            The opportunities for interaction at this node, and an abstraction of the opportunities to interact with children nodes.
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.Species">
+            <summary>
+            A species determines which needs an agent has. Only required for agents.
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.Goal">
+            <summary>
+            Goals are optional, and can be used to make decisions.
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.SatisfactionLevels">
+            <summary>
+            Each need has a value between its min and max value: its satisfaction level. 
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.MostUrgentNeed">
+            <summary>
+            Which need is most urgent, taking weights as well as current satisfaction level into account.
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.CurrentInteractionSatisfiesMostUrgentNeed">
+            <summary>
+            Whether the interaction this node is currently participating in (if any) can satisfy his most urgent need (taking weights as well as current satisfaction level into account)
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.Slots">
+            <summary>
+            All the slots that belong to this Affordance Tree Node
+            </summary>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.#ctor(Simulation.AffordanceTreeNode,System.String,System.String,UnityEngine.Vector3)">
+            <summary>
+            Create a new AffordanceTreeNode and attach it to the parent node
+            </summary>
+            <param name="parent">The parent in the Affordance Tree</param>
+            <param name="name">The name of the node, useful for debugging</param>
+            <param name="speciesName">If this is an agent, which species it is</param>
+            <param name="position">World position</param>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.AvailableSlot(System.Boolean)">
+            <summary>
+            Returns a slot that has been won in an auction. Can be consumed in the process of asking for it.
+            </summary>
+            <param name="consumeSlot">Whether or not the slot should be consumed</param>
+            <returns>The slot that can be consumed</returns>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.AcceptAuctionVictory(Simulation.Slot)">
+            <summary>
+            Accepting a slot (for which a bid was previously placed).
+            </summary>
+            <param name="slot">The slot this affordance tree node should consume (usually resulting in going to the slot and running an interaction)</param>
+            <returns>Whether a slot was made available for consumption</returns>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.AddSlot(UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            Adds a slot (a location to run interactions) to this Affordance Tree Node.
+            </summary>
+            <param name="worldPosition">The absolute position in the game world</param>
+            <param name="localPosition">The position relative to the parent transform</param>
+            <returns>Whether the slot was successfully added</returns>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.AddSlot(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            Adds a slot (a location to run interactions) to this Affordance Tree Node. 
+            </summary>
+            <param name="worldPosition">The absolute position in the game world</param>
+            <param name="localPosition">The position relative to the parent transform</param>
+            <param name="lookAtTarget">A position that characters can be oriented towards for better animation results</param>
+            <returns>Whether the slot was successfully added</returns>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.AddSlot(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Boolean)">
+            <summary>
+            Adds a slot (a location to run interactions) to this Affordance Tree Node. 
+            </summary>
+            <param name="worldPosition">The absolute position in the game world</param>
+            <param name="localPosition">The position relative to the parent transform</param>
+            <param name="lookAtTarget">A position that characters can be oriented towards for better animation results</param>
+            <param name="isAuctionable">If the slot is not auctionable it will not be offered to agents.</param>
+            <returns>Whether the slot was successfully added</returns>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.ApplyParentInteraction">
+            <summary>
+            Apply the effects of the interaction that is running at the parent node to this node.
+            </summary>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.setSpecies(System.String)">
+            <summary>
+            Set the species of this node to a specific kind.
+            </summary>
+            <param name="name">The name (identifier) of the species</param>
+            <returns>Whether the species was successfully set.</returns>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.Remove">
+            <summary>
+            Remove/Delete this affordance tree node at an appropriate time
+            </summary>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.Printer(System.Boolean)">
+            <summary>
+            Returns a string with debug information. Recursive (reports this node and its children).
+            </summary>
+            <param name="reportAffordances">Adds detailed information about the affordances to the debug info.</param>
+            <returns>String with debug information</returns>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.Parent">
+            <summary>
+            The parent of this node
+            </summary>
+        </member>
+        <member name="P:Simulation.AffordanceTreeNode.Root">
+            <summary>
+            The root of the Affordance Tree
+            </summary>
+        </member>
+        <member name="M:Simulation.AffordanceTreeNode.CountOfChildren">
+            <summary>
+            How many children (Affordance Tree nodes) this node has.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Simulation.Bidding">
+            <summary>
+            In NEEDSIM Life simulation slots are allocated to agents by a biding procedure. The methods for placing bids are provided by this class.
+            </summary>
+        </member>
+        <member name="T:Simulation.Bidding.Result">
+            <summary>
+            The result of the bidding procedure.
+            </summary>
+        </member>
+        <member name="F:Simulation.Bidding.Result.Success">
+            <summary>
+            Successfully placed a bid.
+            </summary>
+        </member>
+        <member name="F:Simulation.Bidding.Result.NoBidPlaced">
+            <summary>
+            There was a valid offer, but placing a bid on it was not successful.
+            </summary>
+        </member>
+        <member name="F:Simulation.Bidding.Result.GeneralFailure">
+            <summary>
+            The reason no bid was placed is not handled with detailed information.
+            </summary>
+        </member>
+        <member name="F:Simulation.Bidding.Result.OffersIsNull">
+            <summary>
+            There appears to be a problem with initialization
+            </summary>
+        </member>
+        <member name="F:Simulation.Bidding.Result.OffersAreZero">
+            <summary>
+            There are zero offers. Offers are created by having slots at an object.
+            </summary>
+        </member>
+        <member name="F:Simulation.Bidding.Result.NoParent">
+            <summary>
+            No parent was found. Affordance Tree Nodes place bids at a parent node.
+            </summary>
+        </member>
+        <member name="F:Simulation.Bidding.Result.NoOffersToBidOn">
+            <summary>
+            There are no offers available for the requested type of transaction, for example because the preconditions are not met.
+            </summary>
+        </member>
+        <member name="M:Simulation.Bidding.ValueOrientedBid(Simulation.AffordanceTreeNode)">
+            <summary>
+            Try to find the place that provides the highest utility, taking all weights in the simulation into account.
+            </summary>
+            <param name="caller">The Affordance Tree Node that is trying to place the bid</param>
+            <returns>Success if it worked, a reason it did not work otherwise.</returns>
+        </member>
+        <member name="M:Simulation.Bidding.GoalOrientedBid(Simulation.AffordanceTreeNode)">
+            <summary>
+            Try to find the place that best satisfies the current goal of the agent.
+            </summary>
+            <param name="caller">The Affordance Tree Node that is trying to place the bid</param>
+            <returns>Success if it worked, a reason it did not work otherwise.</returns>
+        </member>
+        <member name="M:Simulation.Bidding.EvaluateRegardingGoal(Simulation.Affordance,Simulation.AffordanceTreeNode)">
+            <summary>
+            
+            </summary>
+            <param name="good"></param>
+            <param name="caller"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Simulation.DatabaseAsset">
+            <summary>
+            Stores the data used by the NEEDSIM Life simulation
+            </summary>
+        </member>
+        <member name="F:Simulation.DatabaseAsset.DatabaseName">
+            <summary>
+            The name of the database
+            </summary>
+        </member>
+        <member name="F:Simulation.DatabaseAsset.isDefault">
+            <summary>
+            Whether this is the one default database.
+            </summary>
+        </member>
+        <member name="F:Simulation.DatabaseAsset.NeedsList">
+            <summary>
+            All the needs in the database
+            </summary>
+        </member>
+        <member name="F:Simulation.DatabaseAsset.Species">
+            <summary>
+            All the species in the database
+            </summary>
+        </member>
+        <member name="F:Simulation.DatabaseAsset.Interactions">
+            <summary>
+            All the interactions in the database.
+            </summary>
+        </member>
+        <member name="M:Simulation.DatabaseAsset.Init(System.String,System.Collections.Generic.List{Simulation.NeedItem},System.Collections.Generic.List{Simulation.Species},System.Collections.Generic.List{Simulation.InteractionData},System.Boolean)">
+            <summary>
+            Initializes the database asset with values
+            </summary>
+            <param name="databaseName">The name of the database</param>
+            <param name="needs">The needs in the database</param>
+            <param name="species">The species in the databse</param>
+            <param name="interactions">The interactions in the database</param>
+            <param name="isDefaultDatabase">Whether this is the one default database.</param>
+        </member>
+        <member name="M:Simulation.DatabaseAsset.GetNeedNames">
+            <summary>
+            Constructs a new array with the names of all needs.
+            </summary>
+            <returns>A new array with the name of all needs.</returns>
+        </member>
+        <member name="M:Simulation.DatabaseAsset.GetSpeciesNames">
+            <summary>
+            Constructs a new array with the names of all species.
+            </summary>
+            <returns>A new array with the name of all species.</returns>
+        </member>
+        <member name="M:Simulation.DatabaseAsset.GetInteractionNames">
+            <summary>
+            Constructs a new array with the names of all interactions.
+            </summary>
+            <returns>A new array with the name of all interactions.</returns>
+        </member>
+        <member name="T:Simulation.GameDataManager">
+            <summary>
+            This class processes the raw data into nice simualtion data for runtime
+            </summary>
+        </member>
+        <member name="P:Simulation.GameDataManager.DebugMessages">
+            <summary>
+            The debug messages that have been stored. There is a max number of messages internally defined.
+            </summary>
+        </member>
+        <member name="P:Simulation.GameDataManager.Data">
+            <summary>
+            The raw, unprocessed data. For processed data ask Manager.Instance.Data
+            </summary>
+        </member>
+        <member name="M:Simulation.GameDataManager.SpeciesLoaded(System.String)">
+            <summary>
+            Is the species you are asking for in the currently loaded data?
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.GameDataManager.InitSimData(System.String,System.Boolean)">
+            <summary>
+            Process the database into data that is optimized for the simulation runtime.
+            </summary>
+            <param name="databaseName">The name of the databse</param>
+            <param name="debug">Whether debug information should be collected and stored. Disable(set to false) to optimize performance.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Simulation.GeneralSettings">
+            <summary>
+            A number of values used as configuration of the simulation and editor.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.SlotColor">
+            <summary>
+            The standard color of a slot being drawn in the scene view.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.AuctionableSlotColor">
+            <summary>
+            If a slot can be auctioned, that is offered to agents, this color is available.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.BlockedSlotColor">
+            <summary>
+            If the slot is blocked it is drawn in this color.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.ReservedSlotColor">
+            <summary>
+            The color of a currently reserved slot.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.ReadyCharacterSlotColor">
+            <summary>
+            Whether a character is at the slot and ready to participate.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.SlotRepresentationRadius">
+            <summary>
+            The radius of the circle or sphere around a slot postion.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.SlotRepresentationHandleRadius">
+            <summary>
+            The radius/size of the handle of a slot.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.DefaultNeedName">
+            <summary>
+            Default value for newly created needs. The name of the need.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.DefaultNeedMinValue">
+            <summary>
+            Default value for newly created needs. Need satisfaction can not be below this value.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.DefaultNeedMaxValue">
+            <summary>
+            Default value for newly created needs. Need satisfaction can not be above this value.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.DefaultNeedCriticalState">
+            <summary>
+            Default value for newly created needs. Below this value the need is considered to be in a critical state.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.DefaultNeedSatisfiedState">
+            <summary>
+            Default value for newly created needs. Above this value the need is considered to be in a satisfied state.
+            </summary>
+        </member>
+        <member name="P:Simulation.GeneralSettings.DefaultNeedChangePerSecondRate">
+            <summary>
+            Default value for newly created needs. At which rate needs become unsatisfied over time
+            </summary>
+        </member>
+        <member name="T:Simulation.Goal">
+            <summary>
+            A goal is a satisfaction level of a need that an agent wants to achieve.
+            </summary>
+        </member>
+        <member name="P:Simulation.Goal.NeedToSatisfy">
+            <summary>
+            Which need should be satisfied by this goal.
+            </summary>
+        </member>
+        <member name="P:Simulation.Goal.SatisfactionState">
+            <summary>
+            What is the current Needs.NeedSatisfactions state of the need this goal is concerned with.
+            </summary>
+        </member>
+        <member name="P:Simulation.Goal.HasBeenAchieved">
+            <summary>
+            Whether the goal has been achieved.
+            </summary>
+        </member>
+        <member name="M:Simulation.Goal.#ctor(System.String,Simulation.Needs.NeedSatisfactions)">
+            <summary>
+            Create a new goal to achieve a specific Needs.NeedSatisfactions state for a specific need.
+            </summary>
+            <param name="needToSatisfy">The name of the need</param>
+            <param name="satisfactionState">The state that is desired</param>
+        </member>
+        <member name="M:Simulation.Goal.GoalAchieved(System.Single)">
+            <summary>
+            True, if the specific NeedSatisfaction Goal is achieved. False otherwise.
+            </summary>
+            <param name="satisfactionValue"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Simulation.Interaction">
+            <summary>
+            An interaction at runtime
+            </summary>
+        </member>
+        <member name="P:Simulation.Interaction.Name">
+            <summary>
+            The unique name of the need. Identifier.
+            </summary>
+        </member>
+        <member name="P:Simulation.Interaction.SatisfactionRates">
+            <summary>
+            The rate at which each need is decayed or satisfied per second whilst the interaction is performed.
+            </summary>
+        </member>
+        <member name="P:Simulation.Interaction.Duration">
+            <summary>
+            The duration in seconds of the interaction.
+            </summary>
+        </member>
+        <member name="P:Simulation.Interaction.Prolongable">
+            <summary>
+            Whether the interaction can be prolonged for another duration intervall
+            </summary>
+        </member>
+        <member name="P:Simulation.Interaction.HasPreconditions">
+            <summary>
+            Whether this interaction has preconditions. Setting this to false can speed up the simulation at the cost of not evaluating preconditions.
+            </summary>
+        </member>
+        <member name="P:Simulation.Interaction.SpeciesAllowed">
+            <summary>
+            Which species are allowed to participate this interaction (precondition)
+            </summary>
+        </member>
+        <member name="M:Simulation.Interaction.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.Single},System.Single,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.Boolean},System.Collections.Generic.Dictionary{Simulation.Needs.NeedSatisfactions,System.Boolean})">
+            <summary>
+            Create a new interaction instance that will be available at simulation runtime.
+            </summary>
+            <param name="Name"></param>
+            <param name="SatisfactionRates"></param>
+            <param name="Duration"></param>
+            <param name="hasPreconditions"></param>
+            <param name="AllowedSpecies"></param>
+            <param name="AllowedSatisfactions"></param>
+        </member>
+        <member name="M:Simulation.Interaction.CheckPreconditions(Simulation.AffordanceTreeNode)">
+            <summary>
+            For some interactions to be used conditions need to be fullfilled. 
+            </summary>
+            <param name="affordanceTreeNode">The AffordanceTreeNode that wants to use the Interaction</param>
+            <returns>Whether all preconditions are fullfilled.</returns>
+        </member>
+        <member name="T:Simulation.InteractionData">
+            <summary>
+            From these data items used in the editor the interactions for the runtime will be generated.
+            </summary>
+        </member>
+        <member name="F:Simulation.InteractionData.interactionName">
+            <summary>
+            The unique name of the need. Identifier.
+            </summary>
+        </member>
+        <member name="F:Simulation.InteractionData.satisfactions">
+            <summary>
+            The rate at which each need is decayed or satisfied per second whilst the interaction is performed.
+            </summary>
+        </member>
+        <member name="F:Simulation.InteractionData.duration">
+            <summary>
+            The duration in seconds of the interaction.
+            </summary>
+        </member>
+        <member name="F:Simulation.InteractionData.doesHavePreconditions">
+            <summary>
+            Whether this interaction has preconditions. Setting this to false can speed up the simulation at the cost of not evaluating preconditions.
+            </summary>
+        </member>
+        <member name="F:Simulation.InteractionData.SpeciesAllowed">
+            <summary>
+            Which species are allowed to participate this interaction (precondition)
+            </summary>
+        </member>
+        <member name="F:Simulation.InteractionData.AtSatisfactionLevels">
+            <summary>
+            NOT YET IMPLEMENTED
+            </summary>
+        </member>
+        <member name="M:Simulation.InteractionData.Init(System.String,System.Collections.Generic.List{Simulation.StringFloatPair})">
+            <summary>
+            Create the data for a new interaction.
+            </summary>
+            <param name="name">The unique name of the need. Identifier.</param>
+            <param name="satisfactionRates">The rate at which the interaction satisfies or decays each need per second.</param>
+        </member>
+        <member name="T:Simulation.Manager">
+            <summary>
+            A singleton for managing the simulation at runtime
+            </summary>
+        </member>
+        <member name="P:Simulation.Manager.Instance">
+            <summary>
+            This is a singleton
+            </summary>
+        </member>
+        <member name="P:Simulation.Manager.Data">
+            <summary>
+            The data loaded into the simulation.
+            </summary>
+        </member>
+        <member name="M:Simulation.Manager.ZeroValuedNeeds(System.Collections.Generic.List{System.String})">
+            <summary>
+            Get a new Dictionary with the respecitve needs values at 0.0f
+            </summary>
+            <param name="needNames">The needs you want to construct the dictionary for</param>
+            <returns>a dictionary with the value 0.0f for each need.</returns>
+        </member>
+        <member name="M:Simulation.Manager.UpdateAffordanceTree">
+            <summary>
+            Update this Affordance Tree Node, and its children (recursive). Necessary to call for the simulation to work
+            </summary>
+        </member>
+        <member name="M:Simulation.Manager.SetAllNeedSatisfactionWeightsToOne">
+            <summary>
+            This essentially turns of the WeightsForNeedSatisfaction, as if they are all one it means when they are multiplied the original values are not changed. 
+            </summary>
+            <returns>true, if there was no issue.</returns>
+        </member>
+        <member name="T:Simulation.NeedItem">
+            <summary>
+            A need, one of the core building blocks of NEEDSIMLifeSimulation
+            </summary>
+        </member>
+        <member name="F:Simulation.NeedItem.needName">
+            <summary>
+            The unique name of the need. Identifier.
+            </summary>
+        </member>
+        <member name="F:Simulation.NeedItem.minValue">
+            <summary>
+            The limit below which the need satisfaction level is capped.
+            </summary>
+        </member>
+        <member name="F:Simulation.NeedItem.maxValue">
+            <summary>
+            The limit above which the the need satisfaction level is capped.
+            </summary>
+        </member>
+        <member name="F:Simulation.NeedItem.changePerSecond">
+            <summary>
+            How much the need changes per second. For example how hungry a character gets over time
+            </summary>
+        </member>
+        <member name="F:Simulation.NeedItem.criticalState">
+            <summary>
+            The limit below which the state of the need satisfcation is considered critical.
+            </summary>
+        </member>
+        <member name="F:Simulation.NeedItem.satisfiedState">
+            <summary>
+            The limit above which the state of the need satisfaction is considered satisfied.
+            </summary>
+        </member>
+        <member name="M:Simulation.NeedItem.#ctor(System.String,System.Single,System.Single,System.Single)">
+            <summary>
+            Create a new need.
+            </summary>
+            <param name="name">The unique name of the need. Identifier.</param>
+            <param name="changeRate">How much the need changes per second. For example how hungry a character gets over time</param>
+            <param name="critical">The limit below which the state of the need satisfcation is considered critical.</param>
+            <param name="satisfied">The limit above which the state of the need satisfaction is considered satisfied.</param>
+        </member>
+        <member name="T:Simulation.Needs">
+            <summary>
+            The Needs class provides methods for interacting with the satisfaction levels of agents.
+            </summary>
+        </member>
+        <member name="T:Simulation.Needs.NeedSatisfactions">
+            <summary>
+            Discrete states of satisfaction levels.
+            </summary>
+        </member>
+        <member name="F:Simulation.Needs.NeedSatisfactions.Unvalued">
+            <summary>
+            Unfortunately no discrete value of the need satisfaction levels is available.
+            </summary>
+        </member>
+        <member name="F:Simulation.Needs.NeedSatisfactions.Maximized">
+            <summary>
+            The satisfaction level of the need is maximized.
+            </summary>
+        </member>
+        <member name="F:Simulation.Needs.NeedSatisfactions.Satisfied">
+            <summary>
+            The need is satisfied, but not yet maximized.
+            </summary>
+        </member>
+        <member name="F:Simulation.Needs.NeedSatisfactions.Uncritical">
+            <summary>
+            The need is below the satisfied limit, but not yet critical
+            </summary>
+        </member>
+        <member name="F:Simulation.Needs.NeedSatisfactions.Critical">
+            <summary>
+            The need satisfaction level is below or equal to the target value for critical satisfaction.
+            </summary>
+        </member>
+        <member name="M:Simulation.Needs.#ctor(Simulation.Species)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="species">The species that the agent owning this set of needs belongs to</param>
+        </member>
+        <member name="M:Simulation.Needs.SetSpecficSatisfactionLevels(System.Collections.Generic.Dictionary{System.String,System.Single})">
+            <summary>
+            Set the level of each need satisfaction to a particular value
+            </summary>
+            <param name="needLevels">The new satisfaction levels</param>
+        </member>
+        <member name="M:Simulation.Needs.ApplyChangeRates(System.Collections.Generic.Dictionary{System.String,System.Single})">
+            <summary>
+            Apply a specific set of change rates, for example the change rates provided by an interaction.
+            </summary>
+            <param name="input"></param>
+        </member>
+        <member name="M:Simulation.Needs.ApplyChangePerSecond">
+            <summary>
+            Apply the change per second rates, that is decay (or increase) each need with its default global change per second rate
+            </summary>
+        </member>
+        <member name="M:Simulation.Needs.GoalToSatisfyLowestNeed">
+            <summary>
+            Compute a goal to satisfy the numerically lowest need.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.Needs.RandomizeValues">
+            <summary>
+            Set a random value for each need satisfation
+            </summary>
+        </member>
+        <member name="M:Simulation.Needs.Satisfactions">
+            <summary>
+            The discrete satisfaction states for each need
+            </summary>
+            <returns>A dictionary which has the discrete states as values for each need.</returns>
+        </member>
+        <member name="M:Simulation.Needs.GetValue(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key">The name of the need.</param>
+            <returns>The satisfaction level for the specified need. NaN if the key is invalid.</returns>
+        </member>
+        <member name="M:Simulation.NeedsManager.GetRandomlyInitializedNeedLevelDictionary(System.String)">
+            <summary>
+             Random value is chosen between the min and the max value. An example use for this is spawning new agents - random values mean each new agent will look to satisfy another need.
+            </summary>
+            <returns>A dictionary with a random values for each need.</returns>
+        </member>
+        <member name="M:Simulation.NeedsManager.GetGoalToSatisfyNumericallyLowestNeed(System.Collections.Generic.Dictionary{System.String,System.Single},Simulation.Species)">
+            <summary>
+            A Goal to go to the next higher state of the need that has the lowest numeric value is returned.
+            
+            Usually it is better to satisfy the need that has the lowest logic value. Whether this differs from the lowest numeric value depends on whether needs have been set up with different numeric values for states such as critical, satisfied, etc.
+            </summary>
+            <param name="needLevels">The level of satisfaction per need</param>
+            <param name="species">The species of the character that wants to have a goal computed.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.NeedsManager.getNextSatisfactionState(System.Collections.Generic.KeyValuePair{System.String,System.Single})">
+            <summary>
+            Find out what need satisfaction state the value refers to
+            </summary>
+            <param name="needState"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Simulation.Strings">
+            <summary>
+            A centralized place for many of the strings used by the NEEDSIM Life simulation.
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SimulationManagerConstructed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.EditorExtensionPosition">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.ProductName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.ProductDescription">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.FolderName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.EditorWindowTitle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.NoDefaultDataFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.MoreThanOneDefaultData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.Advice">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Simulation.Strings.NewHasBeenSet(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Simulation.Strings.NoDatabaseFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.BuildAffordanceTreeFromSceneLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DialogTitleExitPlay">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DialogMessageExitPlay">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DialogButtonExitPlay">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.Welcome">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SupportMail">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.WebsiteURL">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.WebsiteURLButtonText">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.VisitUsAt">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.Contact">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AdvancedInstructionLine1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AdvancedInstructionLine2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AdvancedInstructionLine3">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AdvancedInstructionLine4">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AdvancedInstructionLine5">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.MarkCurrentDatabaseAsDefault">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.UnableToLoadDatabase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.GenericDatabaseName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.defaultString">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.currentDatabaseLoadedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DefaultDatabaseName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AssetsPath">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.NeedsDataBasePath">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DataFolder">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.UserDataResources">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.Asterisk">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AssetAppendix">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SceneAppendix">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DefaultNeedName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DefaultSpecies">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SpeciesNameLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.NeedsInSpeciesLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.LabelNeedName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.LabelNeedChangeRate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.LabelCriticalState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.LabelSatisfiedState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AddNeedButtonLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AddSpeciesButtonLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AddInteractionButtonLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.RemoveNeedButtonLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DefaultDatabaseHeadline">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SpeciesViewHeadline">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AdvancedDatabaseViewHeadline">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DataBasesAvailableLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.ButtonAddDatabaseLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.ButtonRemoveDatabaseLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.WindowSelectionNames">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.InteractionDurationLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.InteractionViewHeadline">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.None">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DefaultInteractionName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Simulation.Strings.DefaultInteractionRelativeNeedName(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="needName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Simulation.Strings.AssignNeedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.InteractionNameLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.NeedAffectedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.NumberOfNeedsAffectedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Simulation.Strings.SatisfactionRateLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Simulation.Strings.InteractionLabelToExtend(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="extension"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Simulation.Strings.PreconditionsHeadline">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.PreconditionsSatisfactionLevelLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.PreconditionsStatisfactionLevelArray">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.PreconditionsSpecies">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.PreconditionDefaultAny">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.PreconditionsUnsatisfiedLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.IsAgent">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DrawGizmosInGame">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.O_Space">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.TerritoryCenter">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SpeciesName">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.ShowDebugInGame">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.ShowDebugInInspector">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.InteractionData">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SlotPositionsArray">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AuctionableBoolArray">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.InteractionDataArrayAccess">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SlotPositionsArraySize">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.SlotPositionsArrayAccess">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.IsAuctionableArraySize">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.IsAuctionableArrayAccess">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.IsAgentLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.ModifyLookAt">
+            <summary>
+            This has to be changed if changes to the respective field name are made in NEEDSIMNode.cs
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.RandomStartLevelsLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.ShowDebugGizmosLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.TerritoryControlHeadline">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.NumberOfSlotsLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Simulation.Strings.SlotNumberLabel(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Simulation.Strings.SlotPositionLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.IsAuctionableLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AssignSpeciesOptionToAgentLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DebugIngameLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DebugInSpectorLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DeleteDatabaseTitle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DeleteDatabaseMessage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DialogYes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.DialogCancel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.YourDatabaseName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.GeneralSettings">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AdvancedSettings">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.LogSimulationLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.PrintSimDebugLogLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Simulation.Strings.AttachSpecificDBLabel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Simulation.StringFloatPair">
+            <summary>
+            A class that helps creating key value pairs.
+            </summary>
+        </member>
+        <member name="F:Simulation.StringFloatPair.stringValue">
+            <summary>
+            The key/name/identifier
+            </summary>
+        </member>
+        <member name="F:Simulation.StringFloatPair.floatValue">
+            <summary>
+            The value
+            </summary>
+        </member>
+        <member name="M:Simulation.StringFloatPair.#ctor(System.String,System.Single)">
+            <summary>
+            Create a new helper to later on create key value pairs
+            </summary>
+            <param name="key">This will be the key</param>
+            <param name="value">This will be the value</param>
+        </member>
+        <member name="T:Simulation.SimulationData">
+            <summary>
+            The data loaded in the simulation at runtime
+            </summary>
+        </member>
+        <member name="P:Simulation.SimulationData.ChangePerSecond">
+            <summary>
+            How much each need changes over time, for example at which rate a character becomes more hungry.
+            </summary>
+        </member>
+        <member name="F:Simulation.SimulationData.CriticalStateDictionary">
+            <summary>
+            For each need, what is the value below or equal to which it is considered critical.
+            </summary>
+        </member>
+        <member name="F:Simulation.SimulationData.SatisfiedStateDictionary">
+            <summary>
+            For each need, what is the value above which it is considered satisfied.
+            </summary>
+        </member>
+        <member name="F:Simulation.SimulationData.NeedNames">
+            <summary>
+            The names of all the needs.
+            </summary>
+        </member>
+        <member name="F:Simulation.SimulationData.SpeciesNames">
+            <summary>
+            The names of all the species.
+            </summary>
+        </member>
+        <member name="F:Simulation.SimulationData.Species">
+            <summary>
+            All the species.
+            </summary>
+        </member>
+        <member name="F:Simulation.SimulationData.InteractionByNameDictionary">
+            <summary>
+            An instance of each interaction by its name
+            </summary>
+        </member>
+        <member name="P:Simulation.SimulationData.Root">
+            <summary>
+            The root of the AFFORDANCE TREE. A lot of management of the simulation can be done from this point.
+            </summary>
+        </member>
+        <member name="P:Simulation.SimulationData.WeightsForNeed">
+            <summary>
+            A general and global weight that affects the utility agent see in each need. Best to use values between 0.0 and 1.0.
+            </summary>
+        </member>
+        <member name="P:Simulation.SimulationData.WeightsForNeedSatisfaction">
+            <summary>
+            How each of the Needs.NeedSatisfactions states is valued - use this for example to prioritize critical needs. Best to use values between 0.0 and 1.0
+            </summary>
+        </member>
+        <member name="M:Simulation.SimulationData.#ctor(System.Collections.Generic.Dictionary{System.String,System.Single},System.Collections.Generic.Dictionary{System.String,System.Single},System.Collections.Generic.Dictionary{System.String,System.Single},System.Collections.Generic.Dictionary{System.String,System.Single},System.Collections.Generic.Dictionary{System.String,System.Single},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{Simulation.Species},System.Collections.Generic.List{Simulation.Interaction},System.Collections.Generic.Dictionary{System.String,Simulation.Species})">
+            <summary>
+            Constructs new simulation data.
+            </summary>
+            <param name="minValueDictionary">The lowest value a need can have at runtime.</param>
+            <param name="maxValueDictionary">The highest value a need can have at runtime.</param>
+            <param name="changePerSecondDictionary">For each need, how much it changes over time, for example a decay of the need 'Hunger' would mean characters get hungry over time</param>
+            <param name="criticalStateDictionary">The values below or equal to which a need is considered to be in critical state.</param>
+            <param name="satisfiedStateDictionary">The value above which a need is considered to be in satisfied state.</param>
+            <param name="needNames">The names of all needs</param>
+            <param name="speciesNames">The names of all species</param>
+            <param name="species">All species</param>
+            <param name="interactionList">All interactions</param>
+            <param name="speciesByName"></param>
+        </member>
+        <member name="T:Simulation.Slot">
+            <summary>
+            A slot is a position in the world where an agent can run the interactions provided by the object that offers the slot.
+            </summary>
+        </member>
+        <member name="T:Simulation.Slot.SlotStates">
+            <summary>
+            A slot is in one of these states at any time.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.SlotStates.Blocked">
+            <summary>
+            A slot that is blocked for whatever reason can not be used by agents.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.SlotStates.Reserved">
+            <summary>
+            An agent reserved this slot for her/himself, and it is assumed that the agent is on the way to slot.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.SlotStates.ReadyCharacter">
+            <summary>
+            An agent is ready to interact with the slot, or interacting with the slot.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.SlotStates.ReadyForAuction">
+            <summary>
+            This slot can be auctioned, but is not currently auctioned
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.SlotStates.CurrentlyOnAuction">
+            <summary>
+            Currently this slot is available for auctions.
+            </summary>
+        </member>
+        <member name="T:Simulation.Slot.Result">
+            <summary>
+            The result of an agent trying to use this slot
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.Result.Success">
+            <summary>
+            No problem was determined as is slot used.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.Result.NoAffordance">
+            <summary>
+            There as a problem with initialization and the affordance this slot belongs to is null.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.Result.NoInteraction">
+            <summary>
+            There is no interaction available at the affordace this slot belongs to.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.Result.UnclearFailure">
+            <summary>
+            There is some issue that lacks proper description
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.Result.InteractionAlreadyRunning">
+            <summary>
+            There is already an interaction running. This is not necessarily a problem, and can in many circumstances be considered a success.
+            </summary>
+        </member>
+        <member name="F:Simulation.Slot.Result.NoProlongableInteraction">
+            <summary>
+            When trying to prolong an interaction there was no such option.
+            </summary>
+        </member>
+        <member name="P:Simulation.Slot.SlotState">
+            <summary>
+            The current state of the slot.
+            </summary>
+        </member>
+        <member name="P:Simulation.Slot.Position">
+            <summary>
+            World space position of the slot.
+            </summary>
+        </member>
+        <member name="P:Simulation.Slot.LocalPosition">
+            <summary>
+            Please set the position relative to the slot's parent transform here
+            </summary>
+        </member>
+        <member name="P:Simulation.Slot.LookAt">
+            <summary>
+            In world coordinates, where the agent should orient him/herself to
+            </summary>
+        </member>
+        <member name="P:Simulation.Slot.LocalLookAt">
+            <summary>
+            The local position of he look at, where the agent should orient him/herself to, relative to the parents transform.
+            </summary>
+        </member>
+        <member name="P:Simulation.Slot.IsAuctionable">
+            <summary>
+            Whether the auction system is allowed to offer this slot to agents.
+            </summary>
+        </member>
+        <member name="M:Simulation.Slot.#ctor(Simulation.Affordance)">
+            <summary>
+            Create a new slot
+            </summary>
+            <param name="affordance">The affordance this slot will belong to.</param>
+        </member>
+        <member name="P:Simulation.Slot.currentInteraction">
+            <summary>
+            Which interaction is currently running at this slot.
+            </summary>
+        </member>
+        <member name="M:Simulation.Slot.InterruptInteraction">
+            <summary>
+            Interrupt the interaction currently running at this slot
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.Slot.CurrentInteractionDuration">
+            <summary>
+            Get the remaining duration of the currently running interaction.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.Slot.ReserveSlot">
+            <summary>
+            Set the state of the slot to reserved.
+            </summary>
+            <returns>Will fail if the slot is blocked.</returns>
+        </member>
+        <member name="M:Simulation.Slot.AgentArrivalEasy(Simulation.AffordanceTreeNode)">
+            <summary>
+            This tries to start a random interaction if no interaction is running and sets slot state to ReadyCharacter.
+            </summary>
+            <param name="participant">The agent that will be participating in the interactions of this slot.</param>
+            <returns>The result of trying to start an interaction</returns>
+        </member>
+        <member name="M:Simulation.Slot.AgentDeparture">
+            <summary>
+            Frees the slot for being offered to other agents.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.Slot.OfferSlot">
+            <summary>
+            Sets the slot state to currently being on auction
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simulation.Slot.SetSlotBlocked">
+            <summary>
+            Set the slot state to being blocked.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Simulation.Species">
+            <summary>
+            A species is a set of needs. For example zombies might only have the 'Hunger' need, whereas humans furthermore have a 'Social' need.
+            </summary>
+        </member>
+        <member name="F:Simulation.Species.speciesName">
+            <summary>
+            The unique name of the need. Identifier.
+            </summary>
+        </member>
+        <member name="F:Simulation.Species.needs">
+            <summary>
+            The set of needs that defines this species.
+            </summary>
+        </member>
+        <member name="M:Simulation.Species.#ctor(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Construct a new species
+            </summary>
+            <param name="name">The unique name of the need. Identifier.</param>
+            <param name="needs">The set of needs that defines this species</param>
+        </member>
+        <member name="M:Simulation.VickeryAuction.GetWinnerAndHisCost">
+            <summary>
+            Depending on whether the auction is a first price or second price auction
+            </summary>
+            <returns>Who the winner is and hwo much s/he has to pay</returns>
+        </member>
+        <member name="M:Simulation.VickeryAuction.PlaceSealedBid(Simulation.AffordanceTreeNode,System.Single)">
+            <summary>
+            This is for sealed-bid auctions (Vickery Auction)
+            </summary>
+            <param name="bidder"></param>
+            <param name="offer"></param>
+            <returns>Whether the bid was placed</returns>
+        </member>
+    </members>
+</doc>

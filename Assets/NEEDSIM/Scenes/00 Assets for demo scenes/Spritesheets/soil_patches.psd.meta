@@ -1,0 +1,146 @@
+fileFormatVersion: 2
+guid: 8493e804e764281429cbe9eb8ab6a22c
+timeCreated: 1434291587
+licenseType: Store
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: soil_patches_0
+    21300002: soil_patches_1
+    21300004: soil_patches_2
+    21300006: soil_patches_3
+    21300008: soil_patches_4
+    21300010: soil_patches_5
+    21300012: soil_patches_6
+    21300014: soil_patches_7
+    21300016: soil_patches_8
+    21300018: soil_patches_9
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: soil_patches_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 928
+        width: 73
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: soil_patches_1
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 632
+        width: 300
+        height: 392
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: soil_patches_2
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 828
+        width: 242
+        height: 195
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: soil_patches_3
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 850
+        width: 194
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: soil_patches_4
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 803
+        width: 73
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: soil_patches_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 664
+        width: 72
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: soil_patches_6
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 619
+        width: 243
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: soil_patches_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 593
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
