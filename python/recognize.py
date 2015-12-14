@@ -55,21 +55,7 @@ calibration_points_names = ["top_left", "top_right", "bottom_left", "bottom_righ
 update_calibration(calibration_points)
 
 if not SHOW_SINGLE_CAPTURE_AND_DUMP:
-    names = {
-        1: 'weird',
-        2: 'ratty',
-        4: 'rect',
-        3: "metcalf",
-        5: 'bumpy',
-        6: 'fat-c',
-        7: 'grad-ctr',
-        8: 'c',
-        0: 'keeney'
-    }
-    existing_contours = pickle.loads(open('shapes.pickle').read())
-    existing_shapes = [matching.ShapeDesc(contour, IMAGE_SIZE_FOR_TRACING) for contour in existing_contours]
-    named_shapes = {name: existing_shapes[i] for i, name in names.iteritems()}
-    matcher = matching.Matcher(named_shapes, IMAGE_SIZE_FOR_TRACING)
+    matcher = matching.Matcher(IMAGE_SIZE_FOR_TRACING)
 
 cv2.namedWindow('image')
 cv2.setWindowProperty("image", cv2.WND_PROP_FULLSCREEN, True)

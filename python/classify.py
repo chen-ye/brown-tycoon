@@ -1,6 +1,28 @@
 import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
 import cv2
+import sklearn
+import pickle
+import os
+import json
+from sklearn.naive_bayes import GaussianNB
+
+def get_named_contours():
+    for filename in os.listdir('shape_training'):
+        if filename.split('.')[-1] == 'pickle':
+            shapes = pickle.load(open(os.path.join('shape_training', filename)))
+            named_indices = json.load(open(os.path.join('shape_training', filename.split('.')[0] + '.json')))
+            for name, index in named_indices.iteritems():
+                yield (name, shapes[index])
+
+def create_classifier(feature_vecs, names):
+    gnb = GaussianNB()
+    gnb = gnb.fit(feature_vecs, names)
+    def classify(vec):
+        cls = gnb.predict(vec)
+        score = 0
+        return cls, score
+    return classify
 
 def features_from_contour(contour):
     feats = []

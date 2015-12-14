@@ -25,9 +25,14 @@ class ShapeDesc(object):
         return dist / self.screen_diag
 
 class Matcher(object):
-    def __init__(self, named_shapes, screen_size):
-        self.named_shapes = named_shapes
-        self.named_feature_vecs = {name: desc.features for name, desc in named_shapes.iteritems()}
+    def __init__(self, screen_size):
+        feature_vecs = []
+        output_labels = []
+        for name, contour in classify.get_named_contours():
+            feature_vecs.append(classify.features_from_contour(contour))
+            output_labels.append(name)
+        
+        self.classifier = classify.create_classifier(feature_vecs, output_labels)
         self.screen_size = screen_size
         
         self.prev_descriptors = {}
@@ -69,7 +74,8 @@ class Matcher(object):
         # returns list of (contour, id, name, descriptor)
     
     def classify_descriptor(self, desc): # returns (name, match score)
-        return classify.classify(desc.features, self.named_feature_vecs)
+        return self.classifier(desc.features)
+        # return classify.classify(desc.features, self.named_feature_vecs)
     
     def classify_contour(self, contour):
         desc = ShapeDesc(contour, self.screen_size)
