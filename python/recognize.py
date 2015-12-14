@@ -212,6 +212,7 @@ def start_server():
 
     Handler = Handler
     print 'Using port', PORT
+    SocketServer.TCPServer.allow_reuse_address = True
     server = SocketServer.TCPServer(('0.0.0.0', PORT), Handler)
     
     server.serve_forever()
