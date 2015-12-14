@@ -1,6 +1,9 @@
 import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
 
+import blanking
+blanking.start()
+
 import numpy as np
 import cv2
 import glob
@@ -12,6 +15,7 @@ CAMERA_NUM = 0
 import pickle
 import urlparse
 import json
+import time
 
 import matching
 
@@ -145,7 +149,10 @@ def video_loop():
     
     while(True):
         # Capture frame-by-frame
+        blanking.set_blank(True)
+        time.sleep(1.0 / 30.0)
         ret, frame = cap.read()
+        blanking.set_blank(False)
         frame = cv2.resize(frame, IMAGE_SIZE)
         # frame = cv2.undistort(frame, mtx, dist, None, newcameramtx)
         frame = cv2.warpPerspective(frame, perspective_matrix, IMAGE_SIZE)
@@ -160,6 +167,7 @@ def video_loop():
         if SHOW_SINGLE_CAPTURE_AND_DUMP:
             cv2.waitKey(0)
             break
+        time.sleep(2.0 / 30.0)
     
     cap.release()
     cv2.destroyAllWindows()
