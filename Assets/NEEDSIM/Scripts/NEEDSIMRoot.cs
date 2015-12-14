@@ -84,7 +84,8 @@ namespace NEEDSIM
 
                 if (buildAffordanceTreeFromScene && isSimulationInitialized)
                 {
-                    BuildFlatAffordanceTreeFromScene();
+                    //BuildFlatAffordanceTreeFromScene();
+                    BuildAffordanceTreeFromNode(GameObject.FindGameObjectWithTag("SimulationRoot").GetComponent<NEEDSIM.NEEDSIMNode>());
                     buildAffordanceTreeFromScene = false;
                 }
 

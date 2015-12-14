@@ -231,7 +231,7 @@ namespace NEEDSIM
                         planDemo.Update();
                     }
                 }
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(3.0f);
             }
 
             Debug.LogWarning("AffordanceTreeNode not yet set up.");

@@ -4,13 +4,19 @@ using System.Collections;
 
 public class Building : MonoBehaviour {
 
-	// Use this for initialization
-	void OnEnable () {
+    NEEDSIMNode thisNode;
+    void Start()
+    {
+        thisNode = GetComponent<NEEDSIMNode>();
+        NEEDSIM.NEEDSIMRoot.Instance.AddNEEDSIMNode(thisNode, transform.parent.GetComponent<NEEDSIMNode>());
         NEEDSIMNode[] nodes = this.GetComponentsInChildren<NEEDSIMNode>();
         foreach (NEEDSIMNode node in nodes)
         {
-            NEEDSIM.NEEDSIMRoot.Instance.AddNEEDSIMNode(node);
+            if (node.GetInstanceID() != thisNode.GetInstanceID())
+            {
+                NEEDSIM.NEEDSIMRoot.Instance.AddNEEDSIMNode(node, thisNode);
+            }
+
         }
-        
     }
 }
