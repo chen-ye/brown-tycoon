@@ -122,6 +122,8 @@ namespace Tycoon {
                 {
                     Debug.LogError(www.error);
                 }
+
+				yield return new WaitForSeconds (.1f);
             }
         }
     }
