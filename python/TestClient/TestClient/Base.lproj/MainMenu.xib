@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15A282b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15A282b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
@@ -672,22 +672,22 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qDP-T1-v83">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qDP-T1-v83">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <gestureRecognizers>
+                            <rotationGestureRecognizer delaysRotationEvents="YES" id="0fF-27-LA8"/>
+                            <panGestureRecognizer delaysPrimaryMouseButtonEvents="YES" id="OPc-AX-N9O"/>
+                            <magnificationGestureRecognizer delaysMagnificationEvents="YES" magnification="0.0" id="dRM-Gh-jk4"/>
+                        </gestureRecognizers>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="bhj-bW-RfE"/>
                     </imageView>
                 </subviews>
-                <constraints>
-                    <constraint firstAttribute="trailing" secondItem="qDP-T1-v83" secondAttribute="trailing" id="NeH-z4-NNw"/>
-                    <constraint firstItem="qDP-T1-v83" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="Rck-sd-Rj5"/>
-                    <constraint firstItem="qDP-T1-v83" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="YX0-nq-eGA"/>
-                    <constraint firstAttribute="bottom" secondItem="qDP-T1-v83" secondAttribute="bottom" id="g9E-fs-WxS"/>
-                </constraints>
             </view>
         </window>
     </objects>

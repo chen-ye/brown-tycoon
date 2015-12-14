@@ -17,7 +17,7 @@ def set_blank(blank):
     req = urllib2.Request(url, "")
     response = urllib2.urlopen(req)
     result = response.read()
-    print result
+    # print result
 
 if __name__ == '__main__':
     start()

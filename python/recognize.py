@@ -1,20 +1,25 @@
 import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
+import cv2
+
+BLANKING = False
+SHOW_SINGLE_CAPTURE_AND_DUMP = False
+PORT = 8080
 
 import blanking
 blanking.start()
 
 import numpy as np
-import cv2
-import glob
 import os
 from threading import Thread
 SCALE = 0.5
 IMAGE_SIZE = int(1920 * SCALE), int(1080 * SCALE)
 CAMERA_NUM = 0
-import pickle
 import urlparse
 import json
+
+import glob
+import pickle
 import time
 
 import matching
@@ -26,9 +31,7 @@ TRACED_ASPECT_RATIO = IMAGE_SIZE_FOR_TRACING[0] * 1.0 / IMAGE_SIZE_FOR_TRACING[1
 MIN_SHAPE_SIZE = 100
 THRESH_RADIUS = 31
 THRESH_CONSTANT = 7
-MAX_CONTOURS = 5
-
-PORT = 8080
+MAX_CONTOURS = 20
 
 perspective_matrix = None
 
@@ -51,14 +54,17 @@ calibration_points = [top_left, top_right, bottom_left, bottom_right]
 calibration_points_names = ["top_left", "top_right", "bottom_left", "bottom_right"]
 update_calibration(calibration_points)
 
-SHOW_SINGLE_CAPTURE_AND_DUMP = False
-
 if not SHOW_SINGLE_CAPTURE_AND_DUMP:
     names = {
-        1: "ratty",
-        2: "E",
-        0: "fuck",
-        3: "shang"
+        1: 'weird',
+        2: 'ratty',
+        4: 'rect',
+        3: "metcalf",
+        5: 'bumpy',
+        6: 'fat-c',
+        7: 'grad-ctr',
+        8: 'c',
+        0: 'keeney'
     }
     existing_contours = pickle.loads(open('shapes.pickle').read())
     existing_shapes = [matching.ShapeDesc(contour, IMAGE_SIZE_FOR_TRACING) for contour in existing_contours]
@@ -144,13 +150,17 @@ def photo_loop():
         cv2.imshow('image', frame)
         cv2.waitKey(0)
 
+def wait(seconds):
+    cv2.waitKey(int(seconds * 1000))
+
 def video_loop():
     cap = cv2.VideoCapture(CAMERA_NUM)
     
     while(True):
         # Capture frame-by-frame
-        blanking.set_blank(True)
-        time.sleep(1.0 / 30.0)
+        if BLANKING:
+            blanking.set_blank(True)
+        wait(1.0 / 30.0)
         ret, frame = cap.read()
         blanking.set_blank(False)
         frame = cv2.resize(frame, IMAGE_SIZE)
@@ -167,7 +177,7 @@ def video_loop():
         if SHOW_SINGLE_CAPTURE_AND_DUMP:
             cv2.waitKey(0)
             break
-        time.sleep(2.0 / 30.0)
+        wait(0.3)
     
     cap.release()
     cv2.destroyAllWindows()

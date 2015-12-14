@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         refreshImage()
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: "http://localhost:8080/html/calibrator")!))
+       //  webView.loadRequest(NSURLRequest(URL: NSURL(string: "http://localhost:8080/html/calibrator")!))
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
@@ -26,7 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func refreshImage() {
-        let url = "http://localhost:8080/image"
+        let url = "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/1017px-Starbucks_Corporation_Logo_2011.svg.png" // "http://localhost:8080/image"
         let req = NSURLRequest(URL: NSURL(string: url)!)
         let task = NSURLSession.sharedSession().dataTaskWithRequest(req) { (let dataOpt, _, _) -> Void in
             if let data = dataOpt, let image = NSImage(data: data) {
@@ -45,5 +45,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBOutlet var imageView: NSImageView!
+    
+    @IBAction func rotate(sender: NSRotationGestureRecognizer) {
+        imageView.tran
+    }
+    
+    @IBAction func pan(sender: NSPanGestureRecognizer) {
+        
+    }
+    
+    @IBAction func pinch(sender: NSMagnificationGestureRecognizer) {
+        
+    }
 }
 

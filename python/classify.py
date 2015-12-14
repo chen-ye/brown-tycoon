@@ -31,6 +31,6 @@ def classify(item, named_features):
     named_features_normalized = {name: normalize_features(features, bounds) for name, features in named_features.iteritems()}
     item_normalized = normalize_features(item, bounds)
     def match_score(vec1, vec2):
-        return sum(map(squared_diff, zip(vec1, vec2)))
+        return sum([squared_diff(f1, f2) for f1, f2 in zip(vec1, vec2)])
     named_match_scores = {name: match_score(item_normalized, named_features_normalized[name]) for name in named_features_normalized.iterkeys()}
     return min(named_match_scores.iterkeys(), key=lambda name: named_match_scores[name]), min(named_match_scores.itervalues())
