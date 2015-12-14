@@ -3,7 +3,7 @@ sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
 import cv2
 
 BLANKING = False
-SHOW_SINGLE_CAPTURE_AND_DUMP = False
+SHOW_SINGLE_CAPTURE_AND_DUMP = 'label' in sys.argv
 PORT = 8080
 
 import blanking
@@ -14,6 +14,7 @@ import os
 from threading import Thread
 SCALE = 0.5
 IMAGE_SIZE = int(1920 * SCALE), int(1080 * SCALE)
+ASPECT = IMAGE_SIZE[0] * 1.0 / IMAGE_SIZE[1]
 CAMERA_NUM = 0
 import urlparse
 import json
@@ -24,10 +25,9 @@ import time
 
 import matching
 
-CONTOUR_SIMPLIFICATION = 100 # lower is stronger
+CONTOUR_SIMPLIFICATION = 150 # lower is stronger
 BLUR_RADIUS = 3
-IMAGE_SIZE_FOR_TRACING = (640, 480)
-TRACED_ASPECT_RATIO = IMAGE_SIZE_FOR_TRACING[0] * 1.0 / IMAGE_SIZE_FOR_TRACING[1]
+IMAGE_SIZE_FOR_TRACING = (640, int(640.0 / ASPECT))
 MIN_SHAPE_SIZE = 100
 THRESH_RADIUS = 31
 THRESH_CONSTANT = 7
@@ -118,9 +118,9 @@ def shape_json(contour, id, shape_name):
     return {
         "key": str(id),
         "type": shape_name,
-        "x": center_x * 1.0 / image_width * TRACED_ASPECT_RATIO,
+        "x": center_x * 1.0 / image_width * ASPECT,
         "y": center_y * 1.0 / image_height,
-        "width": width * 1.0 / image_width * TRACED_ASPECT_RATIO,
+        "width": width * 1.0 / image_width * ASPECT,
         "height": height * 1.0 / image_height,
         "points": [pts[0] for pts in contour], # [[1,1], [1,3], etc]
         "rotation": rotation

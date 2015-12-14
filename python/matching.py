@@ -13,10 +13,10 @@ class ShapeDesc(object):
             center[1] += pt[0][1]
         self.center = [center[0] / len(contour), center[1] / len(contour)]
         # self.token = shape_similarity.contour_to_token(contour)
-        self.features = classify.features_from_contour(contour)
-        self.area = cv2.contourArea(contour)
         self.screen_size = screen_size
         self.screen_diag = (screen_size[0] ** 2 + screen_size[1] ** 2) ** 0.5
+        self.features = classify.features_from_contour(contour)
+        self.area = cv2.contourArea(contour)
         self.shape_name = None
         self.contour = contour
     
@@ -26,6 +26,9 @@ class ShapeDesc(object):
 
 class Matcher(object):
     def __init__(self, screen_size):
+        self.screen_size = screen_size
+        self.screen_diag = (self.screen_size[0] ** 2 + self.screen_size[1] ** 2) ** 0.5
+        
         feature_vecs = []
         output_labels = []
         for name, contour in classify.get_named_contours():
@@ -33,7 +36,6 @@ class Matcher(object):
             output_labels.append(name)
         
         self.classifier = classify.create_classifier(feature_vecs, output_labels)
-        self.screen_size = screen_size
         
         self.prev_descriptors = {}
         self.last_id = 0
