@@ -1,0 +1,26 @@
+<style>
+html, body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+img {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+</style>
+<img id='image'/>
+<script>
+
+var i = 0;
+function fetch() {
+	document.getElementById('image').src = '/image?x=' + (i++);
+	setTimeout(fetch, 500);
+}
+
+fetch();
+
+</script>
