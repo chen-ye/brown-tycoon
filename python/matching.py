@@ -1,4 +1,5 @@
-import shape_similarity
+# import shape_similarity
+import classify
 
 import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
@@ -11,34 +12,22 @@ class ShapeDesc(object):
             center[0] += pt[0][0]
             center[1] += pt[0][1]
         self.center = [center[0] / len(contour), center[1] / len(contour)]
-        self.token = shape_similarity.contour_to_token(contour)
+        # self.token = shape_similarity.contour_to_token(contour)
+        self.features = classify.features_from_contour(contour)
         self.area = cv2.contourArea(contour)
         self.screen_size = screen_size
         self.screen_diag = (screen_size[0] ** 2 + screen_size[1] ** 2) ** 0.5
         self.shape_name = None
         self.contour = contour
     
-    def match_score_ignoring_distance(self, other): # lower is better
-        size_diff = abs(self.area - other.area) / (self.area/2.0 + other.area/2.0)
-        if size_diff > 1.3:
-            return None
-        return (0.1 + shape_similarity.token_diff(self.token, other.token)) * (0.1 * size_diff)
-    
     def dist(self, other):
         dist = ((self.center[0] - other.center[0]) ** 2 + (self.center[1] - other.center[1]) ** 2) ** 0.5
         return dist / self.screen_diag
-    
-    """def match_score(self, other):
-        # lower is better
-        dist = ((self.center[0] - other.center[0]) ** 2, (self.center[1] - other.center[1]) ** 2) ** 0.5
-        if dist / self.screen_diag > 0.1:
-            return None
-        size_diff = abs(self.area - other.area) / (self.area/2.0 + other.area/2.0)
-        return (0.1 + shape_similarity.token_diff(self.token, other.token)) * (0.1 + dist / self.screen_diag) * (0.1 + size_diff)"""
 
 class Matcher(object):
     def __init__(self, named_shapes, screen_size):
         self.named_shapes = named_shapes
+        self.named_feature_vecs = {name: desc.features for name, desc in named_shapes.iteritems()}
         self.screen_size = screen_size
         
         self.prev_descriptors = {}
@@ -80,14 +69,7 @@ class Matcher(object):
         # returns list of (contour, id, name, descriptor)
     
     def classify_descriptor(self, desc): # returns (name, match score)
-        names = self.named_shapes.keys()
-        named_scores = {name: desc.match_score_ignoring_distance(self.named_shapes[name]) for name in names}
-        non_null_names = [name for name, score in named_scores.iteritems() if score is not None]
-        if len(non_null_names) == 0:
-            return None, None
-        else:
-            name = min(non_null_names, key=lambda name: named_scores[name])
-            return name, named_scores[name]
+        return classify.classify(desc.features, self.named_feature_vecs)
     
     def classify_contour(self, contour):
         desc = ShapeDesc(contour, self.screen_size)

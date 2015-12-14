@@ -18,9 +18,11 @@ import matching
 CONTOUR_SIMPLIFICATION = 100 # lower is stronger
 BLUR_RADIUS = 3
 IMAGE_SIZE_FOR_TRACING = (640, 480)
+TRACED_ASPECT_RATIO = IMAGE_SIZE_FOR_TRACING[0] * 1.0 / IMAGE_SIZE_FOR_TRACING[1]
 MIN_SHAPE_SIZE = 100
 THRESH_RADIUS = 31
 THRESH_CONSTANT = 7
+MAX_CONTOURS = 5
 
 PORT = 8080
 
@@ -49,14 +51,10 @@ SHOW_SINGLE_CAPTURE_AND_DUMP = False
 
 if not SHOW_SINGLE_CAPTURE_AND_DUMP:
     names = {
-        3: "big_triangle",
-        6: "pentagon",
-        7: "little_triangle",
-        5: "weird",
-        4: "slanted",
-        0: "skinny_rect",
-        2: "rect",
-        1: "big_rect"
+        1: "ratty",
+        2: "E",
+        0: "fuck",
+        3: "shang"
     }
     existing_contours = pickle.loads(open('shapes.pickle').read())
     existing_shapes = [matching.ShapeDesc(contour, IMAGE_SIZE_FOR_TRACING) for contour in existing_contours]
@@ -94,6 +92,8 @@ def process_image(frame):
     
     contours = [c for c in contours if cv2.contourArea(c) > MIN_SHAPE_SIZE]
     contours = [cv2.approxPolyDP(c, cv2.arcLength(c, True) / CONTOUR_SIMPLIFICATION, True) for c in contours]
+    contours.sort(key=lambda x: cv2.contourArea(x), reverse=True)
+    contours = contours[:min(len(contours), MAX_CONTOURS)]
     
     if SHOW_SINGLE_CAPTURE_AND_DUMP:
         for contour in contours:
@@ -122,10 +122,11 @@ def shape_json(contour, id, shape_name):
     return {
         "key": str(id),
         "type": shape_name,
-        "x": center_x * 1.0 / image_width,
+        "x": center_x * 1.0 / image_width * TRACED_ASPECT_RATIO,
         "y": center_y * 1.0 / image_height,
-        "width": width * 1.0 / image_width,
+        "width": width * 1.0 / image_width * TRACED_ASPECT_RATIO,
         "height": height * 1.0 / image_height,
+        "points": [pts[0] for pts in contour], # [[1,1], [1,3], etc]
         "rotation": rotation
     }
 
