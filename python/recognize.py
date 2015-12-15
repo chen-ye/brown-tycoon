@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
 import cv2
 
-BLANKING = 'blank' in sys.argv
+BLANKING = 'blanking' in sys.argv
 SHOW_SINGLE_CAPTURE_AND_DUMP = 'label' in sys.argv
 PORT = 8080
 
@@ -123,9 +123,9 @@ def shape_json(contour, id, shape_name):
         "key": str(id),
         "name": shape_name,
         "type": shape_name.split('.')[-1],
-        "x": (center_x * 1.0 / image_width - 0.5) * ASPECT,
+        "x": (center_x * 1.0 / image_width - 0.5), # * ASPECT,
         "y": center_y * 1.0 / image_height - 0.5,
-        "width": width * 1.0 / image_width * ASPECT,
+        "width": width * 1.0 / image_width, # * ASPECT,
         "height": height * 1.0 / image_height,
         "points": [[float(p[0]), float(p[1])] for p in points], # [[1,1], [1,3], etc]
         "rotation": rotation
