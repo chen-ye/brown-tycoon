@@ -1,4 +1,4 @@
-import cv2
+import dumbcv as cv2
 import sklearn
 import pickle
 import os
@@ -14,6 +14,15 @@ def get_named_contours():
             named_indices = json.load(open(os.path.join('shape_training', filename.split('.')[0] + '.json')))
             for name, index in named_indices.iteritems():
                 yield (name, shapes[index])
+
+def create_contour_classifier(contours, names):
+    s = cv2.createHausdorffDistanceExtractor()
+    def classify(contour):
+        similiarities = [s.computeDistance(contour, sample) for sample in contours]
+        # print similiarities
+        min_idx = min(range(len(contours)), key=lambda i: similiarities[i])
+        return names[min_idx], similiarities[min_idx]
+    return classify
 
 def create_classifier_nb(feature_vecs, names):
     gnb = GaussianNB()

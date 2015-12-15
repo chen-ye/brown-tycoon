@@ -5,6 +5,10 @@ import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
 import cv2
 
+import compute_rotation
+
+from collections import defaultdict
+
 class ShapeDesc(object):
     def __init__(self, contour, screen_size):
         center = [0,0]
@@ -29,12 +33,17 @@ class Matcher(object):
         self.screen_size = screen_size
         self.screen_diag = (self.screen_size[0] ** 2 + self.screen_size[1] ** 2) ** 0.5
         
+        self.named_contours = defaultdict(list)
         feature_vecs = []
         output_labels = []
         for name, contour in classify.get_named_contours():
+            self.named_contours[name].append(contour)
             feature_vecs.append(classify.features_from_contour(contour))
             output_labels.append(name)
         
+        # contours = [contour for _, contour in classify.get_named_contours()]
+        # names = [name for name, _ in classify.get_named_contours()]
+        # self.classifier = classify.create_contour_classifier(contours, names)
         self.classifier = classify.create_classifier(feature_vecs, output_labels)
         
         self.prev_descriptors = {}
@@ -76,8 +85,15 @@ class Matcher(object):
         # returns list of (contour, id, name, descriptor)
     
     def classify_descriptor(self, desc): # returns (name, match score)
-        return self.classifier(desc.features)
+        # name, affinity = self.classifier(desc.contour)
+        name, affinity = self.classifier(desc.features)
+        # print name
+        return name, affinity
         # return classify.classify(desc.features, self.named_feature_vecs)
+    
+    def get_rotation(self, name, contour):
+        contour2 = self.named_contours[name][0]
+        return compute_rotation.compute_rotation(contour, contour2)
     
     def classify_contour(self, contour):
         desc = ShapeDesc(contour, self.screen_size)

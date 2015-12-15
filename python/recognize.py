@@ -21,6 +21,7 @@ import json
 import glob
 import pickle
 import time
+import math
 
 import matching
 
@@ -75,7 +76,7 @@ def process_image(frame):
     edges = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, THRESH_RADIUS, THRESH_CONSTANT)
     retr_external = True
     
-    image, contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2:]
     hierarchy = hierarchy[0]
     top_level_contour_indices = [i for i in range(len(hierarchy)) if -1 == hierarchy[i][3]]
     biggest_top_level_contour_index = max(top_level_contour_indices, key=lambda i: cv2.contourArea(contours[i])) if len(top_level_contour_indices) else None
@@ -104,8 +105,11 @@ def process_image(frame):
         for (contour, id, name, descriptor) in matcher.run_frame(contours):
             cv2.drawContours(frame, [contour], -1, (255,0,0))
             x,y = contour[0][0]
-            cv2.putText(frame, "{0}:{1}".format(id, name), (x,y), cv2.FONT_HERSHEY_PLAIN, 0.7, (0, 0, 255))
-            output['buildings'].append(shape_json(contour, id, name))
+            rotation, flipped, rot_without_flipping = matcher.get_rotation(name, contour)
+            label = "{0}:{1}:{2}".format(id, name, int(rotation / math.pi * 180))
+            if flipped: label += '(F)'
+            cv2.putText(frame, label, (x,y), cv2.FONT_HERSHEY_PLAIN, 0.7, (0, 0, 255))
+            output['buildings'].append(shape_json(contour, id, name, rotation, flipped, rot_without_flipping))
         output['timestamp'] = str(TIMESTAMP)
         
     if SHOW_SINGLE_CAPTURE_AND_DUMP:
@@ -114,7 +118,7 @@ def process_image(frame):
         f.close()
     return frame, output
 
-def shape_json(contour, id, shape_name):
+def shape_json(contour, id, shape_name, good_rotation, flip, rotation_without_flipping):
     points = [ps[0] for ps in contour]
     ((center_x,center_y),(width,height),rotation) = cv2.minAreaRect(points_to_np(points))
     image_width, image_height = IMAGE_SIZE_FOR_TRACING
@@ -127,7 +131,9 @@ def shape_json(contour, id, shape_name):
         "width": width * 1.0 / image_width, # * ASPECT,
         "height": height * 1.0 / image_height,
         "points": [[float(p[0]), float(p[1])] for p in points], # [[1,1], [1,3], etc]
-        "rotation": rotation
+        "rotation_allowing_flipping": good_rotation,
+        "flipped": flip,
+        "rotation": rotation_without_flipping
     }
 
 def photo_loop():
