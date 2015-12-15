@@ -1,6 +1,3 @@
-import sys
-sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
-
 import numpy as np
 import cv2
 import glob
