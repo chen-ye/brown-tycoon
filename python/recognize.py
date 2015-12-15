@@ -1,6 +1,5 @@
+import dumbcv as cv2
 import sys
-sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
-import cv2
 
 BLANKING = 'blanking' in sys.argv
 SHOW_SINGLE_CAPTURE_AND_DUMP = 'label' in sys.argv
@@ -76,7 +75,7 @@ def process_image(frame):
     edges = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, THRESH_RADIUS, THRESH_CONSTANT)
     retr_external = True
     
-    contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    image, contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     hierarchy = hierarchy[0]
     top_level_contour_indices = [i for i in range(len(hierarchy)) if -1 == hierarchy[i][3]]
     biggest_top_level_contour_index = max(top_level_contour_indices, key=lambda i: cv2.contourArea(contours[i])) if len(top_level_contour_indices) else None
