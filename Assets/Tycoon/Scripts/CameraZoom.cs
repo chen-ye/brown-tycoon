@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 [System.Serializable]
 public class CameraZoom : MonoBehaviour {
 
     public float multiplier = 10f;
+	public Text zoomUI;
 
     void LateUpdate()
     {
@@ -13,6 +15,7 @@ public class CameraZoom : MonoBehaviour {
         {
             Camera.main.fieldOfView += 4 * multiplier * scroll;
             Camera.main.orthographicSize += multiplier * scroll;
+			zoomUI.text = Camera.main.orthographicSize.ToString();
         }
         //-------Code to switch camera between Perspective and Orthographic--------
         if (Input.GetKeyUp(KeyCode.B))
@@ -22,5 +25,10 @@ public class CameraZoom : MonoBehaviour {
             else
                 Camera.main.orthographic = true;
         }
+		if (Input.GetKeyUp(KeyCode.Z))
+		{
+			Camera.main.orthographicSize = 158.0f;
+			zoomUI.text = Camera.main.orthographicSize.ToString();
+		}
     }
 }

@@ -35,7 +35,8 @@ namespace Tycoon {
         private List<string> removedBuildingKeys;
         private Dictionary<string, GameObject> buildingTypeMap;
 
-		public float ScaleRatio = 500;
+		public float XScaleRatio = 500;
+		public float YScaleRatio = 400;
 
         private string lastUpdated = "";
 
@@ -63,12 +64,12 @@ namespace Tycoon {
                 if (buildingObjectMap.ContainsKey(kvpair.Key))
                 {
                     GameObject buildingObject = buildingObjectMap[kvpair.Key];
-					buildingObject.transform.position = new Vector3(building.x * ScaleRatio, 0, building.y * -ScaleRatio);
+					buildingObject.transform.position = new Vector3(building.x * XScaleRatio, 0, building.y * -YScaleRatio);
                     buildingObject.transform.rotation = Quaternion.AngleAxis(building.rotation, Vector3.up);
                 }
                 else
                 {
-					GameObject buildingObject = Instantiate(buildingTypeMap[building.type], new Vector3(building.x * ScaleRatio, 0, building.y * -ScaleRatio), Quaternion.AngleAxis(building.rotation, Vector3.up)) as GameObject;
+					GameObject buildingObject = Instantiate(buildingTypeMap[building.type], new Vector3(building.x * XScaleRatio, 0, building.y * -YScaleRatio), Quaternion.AngleAxis(building.rotation, Vector3.up)) as GameObject;
                     buildingObject.transform.SetParent(this.transform);
                     buildingObjectMap[kvpair.Key] = buildingObject;
                 }

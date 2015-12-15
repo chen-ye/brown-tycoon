@@ -71,5 +71,5 @@ def compute_rotation(contour1, contour2):
     best_idx = max(range(len(similarities)), key=lambda i: similarities[i])
     best_non_flipped_idx = max(range(0, len(similarities), 2), key=lambda i: similarities[i])
     rot, flipped = transforms[best_idx]
-    rot_without_flipping = transforms[best_non_flipped_idx]
+    rot_without_flipping = transforms[best_non_flipped_idx][0]
     return rot, flipped, rot_without_flipping

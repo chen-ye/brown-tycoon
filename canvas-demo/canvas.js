@@ -26,7 +26,7 @@ function render() {
 	ctx.fillRect(0, 0, width, height);
 	
 	ctx.font = "20px -apple-system";
-	ctx.strokeStyle = 'white';
+	ctx.strokeStyle = '#f33';
 	
 	(buildings || []).forEach(function(building) {
 		var w = building.width * width;

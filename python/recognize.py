@@ -37,6 +37,13 @@ MAX_CONTOURS = 20
 
 perspective_matrix = None
 
+IGNORE_RED = True
+unred_mask = np.zeros((IMAGE_SIZE_FOR_TRACING[1],IMAGE_SIZE_FOR_TRACING[0],3), np.uint8)
+for x in xrange(len(unred_mask)):
+    for y in xrange(len(unred_mask[0])):
+        unred_mask[x,y,0] = 1
+        unred_mask[x,y,1] = 1
+
 def points_to_np(points):
     return np.array([np.array(n) for n in points]).astype(np.float32)
 
@@ -73,6 +80,8 @@ def process_image(frame):
     shapes = []
     
     frame = cv2.resize(frame, IMAGE_SIZE_FOR_TRACING)
+    if IGNORE_RED:
+        frame = cv2.multiply(frame, unred_mask)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     blurred = cv2.blur(gray, (BLUR_RADIUS, BLUR_RADIUS))
     edges = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, THRESH_RADIUS, THRESH_CONSTANT)

@@ -95,22 +95,26 @@ namespace Tycoon
         {
             for (int i = 0; i < spawnedObjects.Length; i++)
             {
-                NEEDSIM.NEEDSIMNode node = spawnedObjects[i].GetComponent<NEEDSIM.NEEDSIMNode>();
+				if (spawnedObjects [i] != null) 
+				{
+					NEEDSIM.NEEDSIMNode node = spawnedObjects[i].GetComponent<NEEDSIM.NEEDSIMNode>();
 
-                Simulation.Slot activeSlot = node.Blackboard.activeSlot;
-                node.AffordanceTreeNode.Remove();
+					Simulation.Slot activeSlot = node.Blackboard.activeSlot;
+					node.AffordanceTreeNode.Remove();
 
-                if (activeSlot != null)
-                {
-                    activeSlot.AgentDeparture();
-                }
-                else { Debug.Log("Active slot was null"); }
+					if (activeSlot != null)
+					{
+						activeSlot.AgentDeparture();
+					}
+					else { Debug.Log("Active slot was null"); }
 
+
+
+					GameObject.Destroy(spawnedObjects[i]);
+					PopulationCount--;
+				}
+			}
                 
-
-                GameObject.Destroy(spawnedObjects[i]);
-                PopulationCount--;
-            }
         }
     }
 

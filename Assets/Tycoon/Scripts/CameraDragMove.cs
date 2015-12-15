@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CameraDragMove : MonoBehaviour
 {
+	public Text panUI;
+
     private Vector3 ResetCamera;
     private Vector3 Origin;
     private Vector3 Diference;
@@ -29,6 +32,7 @@ public class CameraDragMove : MonoBehaviour
         if (Drag == true)
         {
             Camera.main.transform.position = Origin - Diference;
+			UpdateUI ();
         }
         //RESET CAMERA TO STARTING POSITION WITH RIGHT CLICK
         if (Input.GetMouseButton(1))
@@ -36,4 +40,8 @@ public class CameraDragMove : MonoBehaviour
             Camera.main.transform.position = ResetCamera;
         }
     }
+	void UpdateUI() 
+	{
+		panUI.text = Camera.main.transform.position.ToString ();
+	}
 }
