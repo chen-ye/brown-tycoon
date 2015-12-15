@@ -5,6 +5,10 @@ import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
 import cv2
 
+import compute_rotation
+
+from collections import defaultdict
+
 class ShapeDesc(object):
     def __init__(self, contour, screen_size):
         center = [0,0]
@@ -29,16 +33,22 @@ class Matcher(object):
         self.screen_size = screen_size
         self.screen_diag = (self.screen_size[0] ** 2 + self.screen_size[1] ** 2) ** 0.5
         
+        self.named_contours = defaultdict(list)
         feature_vecs = []
         output_labels = []
         for name, contour in classify.get_named_contours():
+            self.named_contours[name].append(contour)
             feature_vecs.append(classify.features_from_contour(contour))
             output_labels.append(name)
         
+        # contours = [contour for _, contour in classify.get_named_contours()]
+        # names = [name for name, _ in classify.get_named_contours()]
+        # self.classifier = classify.create_contour_classifier(contours, names)
         self.classifier = classify.create_classifier(feature_vecs, output_labels)
         
         self.prev_descriptors = {}
         self.last_id = 0
+        self.lifetimes = {} # start at 0
     
     def closest_prev_shape_id(self, descriptor, name, exclude_ids=set()):
         id_distances = {id: descriptor.dist(other_desc) for id, other_desc in self.prev_descriptors.iteritems() if other_desc.shape_name == name and id not in exclude_ids}
@@ -70,14 +80,27 @@ class Matcher(object):
                 descriptors_by_id[match_id] = desc
             else:
                 descriptors_by_id[self.assign_id()] = desc
-                
+        
         self.prev_descriptors = descriptors_by_id
+        
+        lifetimes = {id: time+1 for id, time in self.lifetimes.iteritems()}
+        for id in descriptors_by_id:
+            if id not in lifetimes: lifetimes[id] = 0
+        self.lifetimes = lifetimes
+        
         return [(desc.contour, id, desc.shape_name, desc) for id, desc in descriptors_by_id.iteritems()]
         # returns list of (contour, id, name, descriptor)
     
     def classify_descriptor(self, desc): # returns (name, match score)
-        return self.classifier(desc.features)
+        # name, affinity = self.classifier(desc.contour)
+        name, affinity = self.classifier(desc.features)
+        # print name
+        return name, affinity
         # return classify.classify(desc.features, self.named_feature_vecs)
+    
+    def get_rotation(self, name, contour):
+        contour2 = self.named_contours[name][0]
+        return compute_rotation.compute_rotation(contour, contour2)
     
     def classify_contour(self, contour):
         desc = ShapeDesc(contour, self.screen_size)
