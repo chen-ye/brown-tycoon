@@ -123,7 +123,7 @@ def process_image(frame):
 
 def shape_json(contour, id, shape_name, good_rotation, flip, rotation_without_flipping):
     points = [ps[0] for ps in contour]
-    ((center_x,center_y),(width,height),rotation) = cv2.minAreaRect(points_to_np(points))
+    ((center_x,center_y),(width,height),box_rotation) = cv2.minAreaRect(points_to_np(points))
     image_width, image_height = IMAGE_SIZE_FOR_TRACING
     return {
         "key": str(id),
@@ -136,7 +136,8 @@ def shape_json(contour, id, shape_name, good_rotation, flip, rotation_without_fl
         "points": [[float(p[0]), float(p[1])] for p in points], # [[1,1], [1,3], etc]
         "rotation_allowing_flipping": good_rotation,
         "flipped": flip,
-        "rotation": rotation_without_flipping
+        "rotation": rotation_without_flipping,
+        "bounding_box_rotation": box_rotation
     }
 
 def photo_loop():
