@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
 import cv2
 
-BLANKING = False
+BLANKING = 'blank' in sys.argv
 SHOW_SINGLE_CAPTURE_AND_DUMP = 'label' in sys.argv
 PORT = 8080
 
@@ -218,9 +218,13 @@ def start_server():
                         update_calibration(calibration_points)
                         print "CALIBRATION:", str(calibration_points)
                         response = 'okay'
-            elif self.path == '/shapes':
-                content_type = 'application/json'
+            elif self.path == '/shapes' or self.path.startswith('/shapes?callback='):
+                jsonp = 'callback' in self.path
+                content_type = 'application/javascript' if jsonp else 'application/json'
                 response = json.dumps(OUTPUT)
+                if jsonp:
+                    callback = self.path.split('callback=')[-1].split('&')[0]
+                    response = callback + '(' + response + ')';
                     
             self.send_response(200)
             self.send_header('Content-Type', content_type)
