@@ -63,12 +63,12 @@ namespace Tycoon {
                 if (buildingObjectMap.ContainsKey(kvpair.Key))
                 {
                     GameObject buildingObject = buildingObjectMap[kvpair.Key];
-					buildingObject.transform.position = new Vector3(building.x * ScaleRatio, 0, building.y * ScaleRatio);
+					buildingObject.transform.position = new Vector3(building.x * ScaleRatio, 0, building.y * -ScaleRatio);
                     buildingObject.transform.rotation = Quaternion.AngleAxis(building.rotation, Vector3.up);
                 }
                 else
                 {
-					GameObject buildingObject = Instantiate(buildingTypeMap[building.type], new Vector3(building.x * ScaleRatio, 0, building.y * ScaleRatio), Quaternion.AngleAxis(building.rotation, Vector3.up)) as GameObject;
+					GameObject buildingObject = Instantiate(buildingTypeMap[building.type], new Vector3(building.x * ScaleRatio, 0, building.y * -ScaleRatio), Quaternion.AngleAxis(building.rotation, Vector3.up)) as GameObject;
                     buildingObject.transform.SetParent(this.transform);
                     buildingObjectMap[kvpair.Key] = buildingObject;
                 }
@@ -124,7 +124,7 @@ namespace Tycoon {
                     Debug.LogError(www.error);
                 }
 
-				yield return new WaitForSeconds (.1f);
+				yield return new WaitForSeconds (1/60f);
             }
         }
     }

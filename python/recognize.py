@@ -121,6 +121,7 @@ def shape_json(contour, id, shape_name):
     image_width, image_height = IMAGE_SIZE_FOR_TRACING
     return {
         "key": str(id),
+        "name": shape_name,
         "type": shape_name.split('.')[-1],
         "x": (center_x * 1.0 / image_width - 0.5) * ASPECT,
         "y": center_y * 1.0 / image_height - 0.5,
@@ -173,7 +174,10 @@ def video_loop():
         if SHOW_SINGLE_CAPTURE_AND_DUMP:
             cv2.waitKey(0)
             break
-        wait(0.7)
+        if BLANKING:
+            wait(0.7)
+        else:
+            wait(0.01)
     
     cap.release()
     cv2.destroyAllWindows()
