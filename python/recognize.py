@@ -8,7 +8,7 @@ PORT = 8080
 import blanking
 blanking.start()
 
-MIN_SHAPE_LIFETIME = 0 if blanking else 1
+MIN_SHAPE_LIFETIME = 0 if blanking else 2
 
 import numpy as np
 import os

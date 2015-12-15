@@ -51,7 +51,7 @@ function render() {
 		ctx.strokeRect(-w/2, -h/2, w, h);
 		ctx.restore();
 		
-		ctx.fillStyle = 'white';
+		ctx.fillStyle = '#d55';
 		ctx.shadowBlur = 3;
 		ctx.fillText(building.name || building.type, x+w/2, y+h/2 + 20);
 		
