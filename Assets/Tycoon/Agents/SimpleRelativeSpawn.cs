@@ -11,6 +11,7 @@ namespace Tycoon
         public GameObject Prefab;
         [Tooltip("If this is true the population will always be maxed.")]
         public bool KeepAllAlive;
+        public bool KillOnDestroy;
         public float RandomDistance = 0.0f;
         [Tooltip("The length of this array is the max population number.")]
         public Vector3[] spawnRelativeLocations;
@@ -65,19 +66,10 @@ namespace Tycoon
             }
         }
 
-        ///// <summary>
-        ///// Spawn an instance of the prefab for each spawning point at which the previously (if any) spawned instance is dead (null) 
-        ///// </summary>
-        //public void fillPopulation()
-        //{
-        //    for (int i = 0; i < spawnedObjects.Length; i++)
-        //    {
-        //        if (spawnedObjects[i] == null)
-        //        {
-        //            SpawnObject(i);
-        //        }
-        //    }
-        //}
+        public void OnDestroy()
+        {
+            killAll();
+        }
 
         public void SpawnObject(int i)
         {
@@ -103,13 +95,18 @@ namespace Tycoon
         {
             for (int i = 0; i < spawnedObjects.Length; i++)
             {
-                Simulation.Slot activeSlot = spawnedObjects[i].GetComponent<NEEDSIM.NEEDSIMNode>().Blackboard.activeSlot;
+                NEEDSIM.NEEDSIMNode node = spawnedObjects[i].GetComponent<NEEDSIM.NEEDSIMNode>();
+
+                Simulation.Slot activeSlot = node.Blackboard.activeSlot;
+                node.AffordanceTreeNode.Remove();
 
                 if (activeSlot != null)
                 {
                     activeSlot.AgentDeparture();
                 }
                 else { Debug.Log("Active slot was null"); }
+
+                
 
                 GameObject.Destroy(spawnedObjects[i]);
                 PopulationCount--;
