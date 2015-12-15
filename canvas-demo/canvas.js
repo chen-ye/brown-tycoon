@@ -25,11 +25,8 @@ function render() {
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, width, height);
 	
-	ctx.fillStyle = "red";
+	ctx.font = "20px -apple-system";
 	ctx.strokeStyle = 'white';
-	ctx.lineWidth = 3;
-	ctx.shadowBlur = 20;
-	ctx.shadowColor = "purple";
 	
 	(buildings || []).forEach(function(building) {
 		var w = building.width * width;
@@ -40,13 +37,23 @@ function render() {
 		// ctx.fillRect(x-w/2, y-h/2, w, h);
 		
 		// console.log(building.rotation)
+		
+		ctx.fillStyle = "red";
+		ctx.lineWidth = 3;
+		ctx.shadowBlur = 20;
+		ctx.shadowColor = "purple";
+		
 		ctx.save();
 		ctx.translate(x, y);
 		//ctx.translate(-w/2, -h/2);
-		ctx.rotate(building.rotation / 180.0 * Math.PI);
+		ctx.rotate(building.bounding_box_rotation / 180.0 * Math.PI);
 		ctx.fillRect(-w/2, -h/2, w, h);
 		ctx.strokeRect(-w/2, -h/2, w, h);
 		ctx.restore();
+		
+		ctx.fillStyle = 'white';
+		ctx.shadowBlur = 3;
+		ctx.fillText(building.name || building.type, x+w/2, y+h/2 + 20);
 		
 	});
 	
