@@ -8,6 +8,8 @@ PORT = 8080
 import blanking
 blanking.start()
 
+MIN_SHAPE_LIFETIME = 0 if blanking else 1
+
 import numpy as np
 import os
 from threading import Thread
@@ -109,7 +111,8 @@ def process_image(frame):
             label = "{0}:{1}:{2}".format(id, name, int(rotation / math.pi * 180))
             if flipped: label += '(F)'
             cv2.putText(frame, label, (x,y), cv2.FONT_HERSHEY_PLAIN, 0.7, (0, 0, 255))
-            output['buildings'].append(shape_json(contour, id, name, rotation, flipped, rot_without_flipping))
+            if matcher.lifetimes[id] >= MIN_SHAPE_LIFETIME:
+                output['buildings'].append(shape_json(contour, id, name, rotation, flipped, rot_without_flipping))
         output['timestamp'] = str(TIMESTAMP)
         
     if SHOW_SINGLE_CAPTURE_AND_DUMP:

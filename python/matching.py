@@ -48,6 +48,7 @@ class Matcher(object):
         
         self.prev_descriptors = {}
         self.last_id = 0
+        self.lifetimes = {} # start at 0
     
     def closest_prev_shape_id(self, descriptor, name, exclude_ids=set()):
         id_distances = {id: descriptor.dist(other_desc) for id, other_desc in self.prev_descriptors.iteritems() if other_desc.shape_name == name and id not in exclude_ids}
@@ -79,8 +80,14 @@ class Matcher(object):
                 descriptors_by_id[match_id] = desc
             else:
                 descriptors_by_id[self.assign_id()] = desc
-                
+        
         self.prev_descriptors = descriptors_by_id
+        
+        lifetimes = {id: time+1 for id, time in self.lifetimes.iteritems()}
+        for id in descriptors_by_id:
+            if id not in lifetimes: lifetimes[id] = 0
+        self.lifetimes = lifetimes
+        
         return [(desc.contour, id, desc.shape_name, desc) for id, desc in descriptors_by_id.iteritems()]
         # returns list of (contour, id, name, descriptor)
     
