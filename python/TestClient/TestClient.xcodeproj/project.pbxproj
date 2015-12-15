@@ -10,6 +10,7 @@
 		5F5EA6151C1B4BB900DE85BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5EA6141C1B4BB900DE85BF /* AppDelegate.swift */; };
 		5F5EA6171C1B4BB900DE85BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F5EA6161C1B4BB900DE85BF /* Assets.xcassets */; };
 		5F5EA61A1C1B4BB900DE85BF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F5EA6181C1B4BB900DE85BF /* MainMenu.xib */; };
+		5FE6C5E11C1F940300344571 /* AZWarpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE6C5E01C1F940300344571 /* AZWarpView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +19,9 @@
 		5F5EA6161C1B4BB900DE85BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F5EA6191C1B4BB900DE85BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		5F5EA61B1C1B4BB900DE85BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FE6C5DE1C1F940300344571 /* TestClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestClient-Bridging-Header.h"; sourceTree = "<group>"; };
+		5FE6C5DF1C1F940300344571 /* AZWarpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AZWarpView.h; sourceTree = "<group>"; };
+		5FE6C5E01C1F940300344571 /* AZWarpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AZWarpView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,9 +55,12 @@
 			isa = PBXGroup;
 			children = (
 				5F5EA6141C1B4BB900DE85BF /* AppDelegate.swift */,
+				5FE6C5DF1C1F940300344571 /* AZWarpView.h */,
+				5FE6C5E01C1F940300344571 /* AZWarpView.m */,
 				5F5EA6161C1B4BB900DE85BF /* Assets.xcassets */,
 				5F5EA6181C1B4BB900DE85BF /* MainMenu.xib */,
 				5F5EA61B1C1B4BB900DE85BF /* Info.plist */,
+				5FE6C5DE1C1F940300344571 /* TestClient-Bridging-Header.h */,
 			);
 			path = TestClient;
 			sourceTree = "<group>";
@@ -84,7 +91,7 @@
 		5F5EA6091C1B4BB800DE85BF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Nate Parrott";
 				TargetAttributes = {
@@ -129,6 +136,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F5EA6151C1B4BB900DE85BF /* AppDelegate.swift in Sources */,
+				5FE6C5E11C1F940300344571 /* AZWarpView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,11 +238,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TestClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nateparrott.TestClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TestClient/TestClient-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -242,11 +253,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TestClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nateparrott.TestClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TestClient/TestClient-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -269,6 +282,7 @@
 				5F5EA6201C1B4BB900DE85BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

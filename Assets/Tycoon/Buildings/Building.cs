@@ -19,4 +19,9 @@ public class Building : MonoBehaviour {
 
         }
     }
+
+	void OnDestroy() 
+	{
+		thisNode.AffordanceTreeNode.Remove ();
+	}
 }

@@ -62,6 +62,7 @@ cv2.setWindowProperty("image", cv2.WND_PROP_FULLSCREEN, True)
 
 IMAGE = None
 OUTPUT = {}
+TIMESTAMP = 0
 
 def process_image(frame):
     output = {
@@ -99,12 +100,15 @@ def process_image(frame):
             cv2.putText(frame, str(i), (x,y), cv2.FONT_HERSHEY_PLAIN, 0.7, (0, 0, 255))
             shapes.append(contour)
     else:
+        global TIMESTAMP
+        TIMESTAMP += 1
         for (contour, id, name, descriptor) in matcher.run_frame(contours):
             cv2.drawContours(frame, [contour], -1, (255,0,0))
             x,y = contour[0][0]
             cv2.putText(frame, "{0}:{1}".format(id, name), (x,y), cv2.FONT_HERSHEY_PLAIN, 0.7, (0, 0, 255))
             output['buildings'].append(shape_json(contour, id, name))
-
+        output['timestamp'] = str(TIMESTAMP)
+        
     if SHOW_SINGLE_CAPTURE_AND_DUMP:
         f = open('last_rec.pickle', 'w')
         f.write(pickle.dumps(shapes))
@@ -117,12 +121,12 @@ def shape_json(contour, id, shape_name):
     image_width, image_height = IMAGE_SIZE_FOR_TRACING
     return {
         "key": str(id),
-        "type": shape_name,
-        "x": center_x * 1.0 / image_width * ASPECT,
-        "y": center_y * 1.0 / image_height,
+        "type": shape_name.split('.')[-1],
+        "x": (center_x * 1.0 / image_width - 0.5) * ASPECT,
+        "y": center_y * 1.0 / image_height - 0.5,
         "width": width * 1.0 / image_width * ASPECT,
         "height": height * 1.0 / image_height,
-        "points": [pts[0] for pts in contour], # [[1,1], [1,3], etc]
+        "points": [[float(p[0]), float(p[1])] for p in points], # [[1,1], [1,3], etc]
         "rotation": rotation
     }
 
@@ -146,12 +150,18 @@ def video_loop():
         # Capture frame-by-frame
         if BLANKING:
             blanking.set_blank(True)
-        wait(1.0 / 30.0)
-        ret, frame = cap.read()
-        blanking.set_blank(False)
+        wait(0.1)
+        if BLANKING:
+            blanking.set_blank(False)
+        wait(0.1)
+        cap.grab()
+        # blanking.set_blank(False)
+        ret, frame = cap.retrieve()
         frame = cv2.resize(frame, IMAGE_SIZE)
         # frame = cv2.undistort(frame, mtx, dist, None, newcameramtx)
         frame = cv2.warpPerspective(frame, perspective_matrix, IMAGE_SIZE)
+        frame = cv2.flip(frame, 1)
+        frame = cv2.flip(frame, -1)
         
         frame, output = process_image(frame)
         
@@ -163,7 +173,7 @@ def video_loop():
         if SHOW_SINGLE_CAPTURE_AND_DUMP:
             cv2.waitKey(0)
             break
-        wait(0.3)
+        wait(0.7)
     
     cap.release()
     cv2.destroyAllWindows()

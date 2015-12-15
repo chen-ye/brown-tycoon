@@ -53,14 +53,14 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
-    // NSApp.activationPolicy = NSApplicationActivationPolicyAccessory;
+    NSApp.activationPolicy = NSApplicationActivationPolicyAccessory;
     
     self.window = [[SBWindow alloc] initWithContentRect:[NSScreen mainScreen].frame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
     [self.window setLevel:NSMainMenuWindowLevel + 2];
     self.window.excludedFromWindowsMenu = YES;
-    self.window.opaque = YES;
+    self.window.opaque = NO;
     self.window.ignoresMouseEvents = YES;
-    self.window.backgroundColor = [NSColor colorWithWhite:0 alpha:1];
+    self.window.backgroundColor = [NSColor colorWithWhite:0 alpha:0.8];
     self.window.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorStationary | NSWindowCollectionBehaviorIgnoresCycle;
     
     self.server = [HTTPServer new];

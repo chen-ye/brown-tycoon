@@ -35,8 +35,9 @@ namespace Tycoon {
         private List<string> removedBuildingKeys;
         private Dictionary<string, GameObject> buildingTypeMap;
 
+		public float ScaleRatio = 500;
+
         private string lastUpdated = "";
-        private bool updated = false;
 
         // Use this for initialization
         void Start()
@@ -62,12 +63,12 @@ namespace Tycoon {
                 if (buildingObjectMap.ContainsKey(kvpair.Key))
                 {
                     GameObject buildingObject = buildingObjectMap[kvpair.Key];
-                    buildingObject.transform.position = new Vector3(building.x, 0, building.y);
+					buildingObject.transform.position = new Vector3(building.x * ScaleRatio, 0, building.y * ScaleRatio);
                     buildingObject.transform.rotation = Quaternion.AngleAxis(building.rotation, Vector3.up);
                 }
                 else
                 {
-                    GameObject buildingObject = Instantiate(buildingTypeMap[building.type], new Vector3(building.x, 0, building.y), Quaternion.AngleAxis(building.rotation, Vector3.up)) as GameObject;
+					GameObject buildingObject = Instantiate(buildingTypeMap[building.type], new Vector3(building.x * ScaleRatio, 0, building.y * ScaleRatio), Quaternion.AngleAxis(building.rotation, Vector3.up)) as GameObject;
                     buildingObject.transform.SetParent(this.transform);
                     buildingObjectMap[kvpair.Key] = buildingObject;
                 }
@@ -77,6 +78,7 @@ namespace Tycoon {
                 Destroy(buildingObjectMap[key]);
                 buildingObjectMap.Remove(key);
             }
+			removedBuildingKeys.Clear ();
         }
 
         void ReadJson(string jsonString)
@@ -85,7 +87,7 @@ namespace Tycoon {
             Buildings buildingsWrapper = JsonConvert.DeserializeObject<Buildings>(jsonString);
             List<BuildingData> buildingDatas = buildingsWrapper.buildings;
 
-            if (!lastUpdated.Equals(buildingsWrapper.timestamp))
+			if (!buildingsWrapper.timestamp.Equals(lastUpdated))
             {
                 lastUpdated = buildingsWrapper.timestamp;
                 Dictionary<string, BuildingData> newBuildingDataMap = new Dictionary<string, BuildingData>();
@@ -102,7 +104,6 @@ namespace Tycoon {
                     }
                 }
                 buildingDataMap = newBuildingDataMap;
-                updated = true;
             }
 
             UpdateBuildings();
