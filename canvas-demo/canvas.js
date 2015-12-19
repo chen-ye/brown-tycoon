@@ -11,8 +11,8 @@ var ctx = canvas.getContext('2d');
 var buildings = null;
 
 function fetch() {
-	// var url = 'test.json';
-	var url = 'http://localhost:8080/shapes?callback=?';
+	var url = 'test.json';
+	// var url = 'http://localhost:8080/shapes?callback=?';
 	$.getJSON(url, function(data) {
 		// console.log(data)
 		buildings = data.buildings;

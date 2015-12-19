@@ -1,11 +1,8 @@
 {
-	"slater.dorm": 8,
-	"slater.dorm": 9,
-	"sharpe.refectory": 2,
-	"metcalf.academic": 0,
-	"snake.gym": 5,
-	"university_hall.academic": 7,
-	"E.academic": 4,
-	"monster.gym": 6,
-	"macmillan.academic": 3
+	"rectangle": 0,
+	"trapezoid": 1,
+	"triangle": 4,
+	"small_triangle": 5,
+	"coffin": 3,
+	"weird": 2
 }
