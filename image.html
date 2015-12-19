@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset='utf-8'/>
+	<title>Image</title>
+	<style>
+	html, body {
+		background-color: black;
+	}
+	img {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+	</style>
+</head>
+<body>
+	
+	<img id='image'/>
+	
+	<script>
+	var img = document.getElementById('image');
+	img.src = decodeURIComponent(location.href.split('?img=')[1]); // TODO: less hacky
+	</script>
+</body>
+</html>
