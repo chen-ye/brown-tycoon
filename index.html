@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'/>
+	<title>How to Build an Augmented-Reality Table</title>
+	<link rel='stylesheet' href='style.css'/>
+	<script src='jquery.js'></script>
+	<script src='index.js'></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta property="og:title" content="How to Build an Augmented-Reality Table" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="table.nateparrott.com" />
+	<meta property="og:image" content="og.jpg" />
+</head>
+<body>
+	<section class='full-page' id='title'>
+		<div class='title-box'>
+			<object id='splash-image' data="animation-web.svg" type="image/svg+xml"></object>
+			<div class='title-text'>
+				<div>
+					<div>
+						<h1>How to Build an <br/> Augmented-Reality  Table</h1>
+						<h2>
+							Experiments with a new kind of interface • <span class='byline'> by <a href='http://nateparrott.com'>Nate Parrott</a></span></h2>
+						</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<p id='intro'>
+			For the past couple weeks, <a href='http://chen.strikingly.com'>Chén Yè</a> and I have been prototyping an <em>augmented reality table.</em> Driven by <strike>an impending deadline for final-project proposals for a class</strike> an intrepid desire to push the frontiers of uncharted interfaces, we threw together a couple wooden boards, a webcam, projector, frosted acrylic and an unholy amount of tape into <strong>a video-screen table that knows what's on it</strong>, letting you interact with software by picking and placing down objects on a surface. Here's how we did it.
+		</p>
+		
+		<div class='mobile-horiz-scroll'>
+			<div class='full-width image-set'>
+				<img style='width: 38%' src='future.gif'/>
+				<img style='width: 21.36%' src='table-demo.jpg'/>
+				<img style='width: 38%' src='ratty.gif'/>
+			</div>
+		</div>
+		
+		<div class='reading'>
+			<div class='in-margin semi-decorative'>
+				<img src='Edge1.svg'/>
+			</div>
+		</div>
+		
+		<h2>The Protoype</h2>
+		
+		<p>
+			We started by laying out a few key features our prototype would have:
+		</p>
+		
+		<ul class='reading'>
+			<li>An elevated, flat surface, because that's pretty much the minimum viable table</li>
+			<li>The ability to "see" what's placed on it, using a camera somewhere, connected to a computer running some sort of image processing code</li>
+			<li>The ability to provide visual feedback on the surface of the table</li>
+			<li>Code to tie the object recognition and projection together—to let the objects on the table directly affect the image projected on its surface.</li>
+		</ul>
+		
+		<div class='reading'>
+			<div class='in-margin semi-decorative'>
+				<img src='Edge2.svg'/>
+			</div>
+		</div>
+		
+		<h2>The Wood</h2>
+		<p>
+			As a coder who knows nothing about materials, this was actually the most daunting challenge for me.
+			We originally aimed to build the table out of metal — but, pressed for time, I gathered a handful of wooden boards, cut them up into four pieces, and attached them together using a terrifyingly powerful instrument called a nail gun. Our table ended up being a bit <em>structurally unsound</em>, so I have no valuable guidance for anyone else trying to do this.</p>
+		
+		<p>
+			I <em>do</em> think the overall shape of our table was a good choice. Rather than four freestanding legs, we used four sides, two of which were shorter than the others, and didn't reach the floor. This made our table into a sort-of box, which did a good job of hiding some of the equipment inside. Meanwhile, the fact that the long sides of the box didn't reach the floor made it seem more open and table-like, rather than some sort of mysterious column—not to mention providing much-needed ease of access to the bottom half of the table's inside.
+		</p>
+		
+		<h2>The Blurry-Surface Trick</h2>
+		<p>
+			How do we get the table to recognize what's placed on it? We considered placing a camera above the table, pointing down at its surface. This wasn't attractive because it'd involve assembling a separate piece of equipment <em>outside</em> the table. Instead, we chose to make the surface of the table <em>transparent,</em> with a camera <em>below the surface, pointing up.</em> This approach seemed like the right move, but introduced a couple challenges:
+		</p>
+		<ul class='reading'>
+			<li>How do we discriminate what's <em>on</em> the table's surface from what's <em>above</em> it?</li>
+			<li>How do we project an image on the table if the surface is transparent?</li>
+		</ul>
+		<div class='reading'>
+			<div class='in-margin'>
+				<img src='blurry.jpg'/>
+				<p>An early proof-of-concept photo of shapes atop a blurry surface.</p>
+			</div>
+		</div>
+		
+		<p>
+			We managed to solve both challenges with a single solution: giving the table <em>a blurry surface</em>. A frosted transparent surface would allow us to back-project an image onto it from below; it would also cause everything behind to table to appear blurry in the camera's image, <em>except the sillhouette of anything placed directly on the surface.</em>
+		</p>
+		
+		<p>
+			We cut out a sheet of acrylic plastic using a band saw and used some art-store-bought "glass-frosting spray" on it. Do this outside. We bought an <em>wide-angle webcam</em>, taped it inside the table, and placed the plastic surface on top. It worked.
+		</p>
+		
+		<div class='mobile-horiz-scroll'>
+			<div class='full-width image-set'>
+				<img style='width: 20.8%' src='table-1.jpg'/>
+				<img style='width: 27.8%' src='table-2.jpg'/>
+				<img style='width: 49.6%' src='blurry-objects.jpg'/>
+			</div>
+		</div>
+		
+		<h2>Recognizing Objects</h2>
+		
+		<p>
+			We processed the webcam's imagery using <a href='http://opencv.org'>OpenCV</a> running on a MacBook, training the software to recognize the footprints of a large set of pre-selected objects. I could write a whole post on how the code worked—but that time would probably be better spent actually making it work better. Here's a rough overview of the pipeline:
+		</p>
+		
+		<div class='reading image-flow-hint'>
+			<div>
+				<img src='arrow.svg'/>
+			</div>
+			<div>Drag your mouse or finger across the image to flip through the stages of processing</div>
+			<div>
+				<img src='arrow.svg'>
+			</div>
+		</div>
+		<div class='image-flow reading'>
+			<div>
+				<img src='processing/image.jpg'/>
+				<p>Images are captured by a webcam inside the table and loaded into a Python program.</p>
+			</div>
+			<div>
+				<img src='processing/transformed.jpg'/>
+				<p>The images are warped about the corners to produce a flat image that doesn't contain the sides of the table. The positions of each corner are hard-coded during calibration.</p>
+			</div>
+			<div>
+				<img src='processing/gray.jpg'/>
+				<p>Images are converted to grayscale; the algorithm doesn't care about color at all.</p>
+			</div>
+			<div>
+				<img src='processing/blurred.png'/>
+				<p>Images are blurred to get rid of random specs of noise.</p>
+			</div>
+			<div>
+				<img src='processing/threshold.png'/>
+				<p>Images are passed through an <strong>adaptive threshold filter,</strong> which turns pixels entirely black if they're darker than the average of surrounding pixels, and white otherwise.</p>
+			</div>
+			<div>
+				<img src='processing/contours.jpg'/>
+				<p>Thresholding is necessary for the next step: tracing the contours (outlines) of the shapes.</p> 
+			</div>
+			<div>
+				<img src='processing/recognized.jpg'/>
+				<p>Various metrics are computed for each contour; shapes are identified by finding the closest-matching set of <em>sample contours</em> that have manually been labelled during calibration.</p>
+			</div>
+			<div>
+				<img src='processing/json.png'/>
+				<p>Applications can make requests to the image-recognition system—running as a local web server—and receive JSON data containing the position, size and type of each detected object.</p>
+			</div>
+		</div>
+				
+		<h2>Projecting an image</h2>
+		
+		<p>
+			<img class='in-margin' src='projection.jpg'/>
+			Thanks to the frosted-acrylic tabletop, we can rear-project images straight from the computer onto the surface of the table. The key to success here is to get a projector with a low <em>throw ratio</em> — a projector that produces a large image without being very far from the surface. Our projector had a throw ratio of about 1.3, which meant that it had to be on the floor for it to project across the full area of our table. Of course, this entirely depends on the dimensions of your table—ideally, we'd have a <em>super low</em> throw ratio so we could have a large surface without making an unreasonably high table. Because our projector was completely on the ground, we didn't bother attaching it to our table in the final iteration, though that's something we would've liked to do.
+		</p>
+		
+		<h2>Building Experiences</h2>
+		
+		<p>
+			<img class='in-margin' src='js.jpg'/>
+			The fun part of the iPhone isn't the <em>revolutionary multitouch display</em> or the <em>A7 system-on-a-chip</em> — it's the incredible apps it enables people to build. For our demo, we had two "apps" to show off. The first was a rather boring HTML5 canvas demo that drew outlines and labels around every object you threw on it. It was an exciting tech demo, but it wasn't that interesting otherwise.
+		</p>
+		
+		<p>
+			Far cooler was Chén's app: a functional simulation of Brown University. We 3D-printed noteworthy campus buildings (and laser-cut sillhouettes of the rest in cardboard) and built an <a href='https://en.wikipedia.org/wiki/Agent-based_model'>agent simulation</a> of students inhabiting a campus that players <em>create</em> by <em>placing buildings onto the table.</em> Students have dorms and classes, and they need food and exercise — the player's goal is to place buildings optimally to maximize students' happiness.
+		</p>
+		
+		<div class='mobile-horiz-scroll'>
+			<div class='full-width image-set'>
+				<img style='width: 43.2%' src='brown.png'/>
+				<img style='width: 36%' src='playing.JPG'/>
+				<img style='width: 19%' src='tycoon.jpg'/>
+			</div>
+		</div>
+		
+		<p>
+			Simulations like that are just the tip of the iceberg — we've brainstormed tons of ideas for applications that'd benefit from the table's unique interaction model:</p>
+			
+			<h4 class='placeholder'>idea card visualizations go here</h4>
+			
+			
+		<h2>Next Steps</h2>
+		
+		<p>
+			We're both super excited about the potential for tables like this — we think that with enough work, we'll be able to build a much more solid table, in the physical and software sense. Stay tuned!
+		</p>
+		
+	</section>
+</body>
+</html>

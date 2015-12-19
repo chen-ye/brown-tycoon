@@ -1,0 +1,285 @@
+@import url(https://fonts.googleapis.com/css?family=Abril+Fatface);
+
+h1, h2, h3 {
+	font-family: "Abril Fatface", "Georgia", serif;
+	font-weight: normal;
+}
+
+html, body {
+	margin: 0;
+	font-family: 'Georgia', serif;
+	height: 100%;
+}
+
+a, a:link {
+	color: inherit;
+}
+
+img {
+	max-width: 100%;
+}
+
+.placeholder {
+	width: 150px;
+	padding: 20px;
+	background-color: #ccc;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+/** PAGES */
+
+section {
+	position: relative;
+}
+
+.full-page {
+	height: 100%;
+	box-sizing: border-box;
+  	display: flex;
+  	align-items: center;
+  	justify-content: center;
+}
+
+section > p, .reading, section:not(:first-child) h2 {
+	max-width: 650px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: 2;
+	color: #111;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+@media screen and (max-width: 650px) {
+	section > p, .reading, section:not(:first-child) h2 {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+.full-width {
+	clear: both;
+}
+
+/** IN-MARGIN */
+
+.in-margin {
+	width: 200px;
+	margin-right: -240px;
+	float: right;
+	line-height: 1.5;
+}
+
+@media screen and (max-width: 1159px) {
+	.in-margin {
+		margin-right: 0;
+		padding-left: 15px;
+		padding-right: 15px;
+		padding-top: 15px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.in-margin.semi-decorative {
+		width: 100px;
+	}
+	.in-margin:not(.semi-decorative) {
+		width: 35%;
+		min-width: 120px;
+		padding-left: 4px;
+		padding-right: 4px;
+		padding-top: 4px;
+	}
+}
+
+.in-margin p {
+	font-size: small;
+	font-family: sans-serif;
+	color: gray;
+	margin-top: 0;
+}
+
+/** IMAGE SETS */
+
+.image-set {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	display: flex;
+	justify-content: center;
+}
+
+.image-set > * {
+	border: 2px solid white;
+	box-sizing: border-box;
+}
+
+/** MOBILE SCROLL */
+
+@media screen and (max-width: 600px) {
+	.mobile-horiz-scroll {
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.mobile-horiz-scroll > * {
+		width: 700px;
+	}
+}
+
+/** TITLE & SPLASH */
+
+#title {
+	background-image: url(dots.png);
+	background-size: 200px 200px;
+	box-sizing: border-box;
+	border-bottom: 5px solid #222;
+}
+
+#splash-image {
+	height: 100%;
+	width: 100%;
+}
+
+.title-box {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+.title-text {
+	position: absolute;
+	right: 5%;
+	bottom: 5%;
+	height: 100%;
+	width: 70%;
+	text-align: right;
+	display: table;
+}
+
+@media screen and (max-width: 600px) {
+	.title-text {
+		left: 0;
+		width: 100%;
+		padding-left: 5px;
+		padding-right: 5px;
+		box-sizing: border-box;
+		text-align: center;
+		bottom: 5px;
+		right: 0;
+	}
+}
+
+.title-text > * {
+	display: table-cell;
+	vertical-align: bottom;
+}
+
+.title-text h1 {
+	margin-bottom: 0;
+	font-size: 50px;
+}
+
+.title-text h2 {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	opacity: 0.5;
+	font-size: 14px;
+	margin-top: 1em;
+	line-height: 1.6;
+	font-family: sans-serif;
+	font-weight: bold;
+}
+
+@media screen and (max-width: 750px) {
+	.title-text h1 {
+		font-size: 30px;
+	}
+	.title-text h2 {
+		font-size: 12px;
+	}
+}
+
+@media screen and (max-width: 340px) {
+	.title-text h1 {
+		font-size: 25px;
+	}
+}
+
+@media screen and (max-height: 650px) {
+	#splash-image {
+		height: 60%;
+	}
+}
+
+/** IMAGE FLOW */
+
+.image-flow {
+	height: 400px;
+	position: relative;
+	background-color: #333;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.image-flow > div:not(:first-child) {
+	display: none;
+}
+
+.image-flow img {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.image-flow p {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	bottom: 0;
+	box-sizing: border-box;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.7);
+	color: white;
+	font-size: small;
+	margin-bottom: 0;
+	font-family: sans-serif;
+}
+
+.image-flow-hint {
+	font-family: sans-serif;
+	font-size: small;
+	text-align: center;
+	opacity: 0.5;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-height: 1.2;
+}
+
+.image-flow-hint > div {
+	vertical-align: middle;
+	padding: 5px;
+}
+
+.image-flow-hint > div > img {
+	height: 12px;
+	position: relative;
+	top: 2px;
+	opacity: 0.5;
+}
+
+@media screen and (max-width: 450px){
+	.image-flow-hint > div > img {
+		height: 20px;
+	}
+}
+
+.image-flow-hint > div:first-child > img {
+	transform: rotate(180deg);
+}

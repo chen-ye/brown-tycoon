@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="214px" height="160px" viewBox="0 0 214 160" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>Edge1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Edge1" sketch:type="MSArtboardGroup" stroke="#979797" stroke-width="2">
+            <path d="M51.3260107,152.972432 L63.8260107,101.472432" id="Line" stroke-linecap="round" sketch:type="MSShapeGroup"></path>
+            <path d="M148.484723,151.972432 L160.984723,100.472432" id="Line" stroke-linecap="round" sketch:type="MSShapeGroup" transform="translate(154.984723, 125.972432) scale(-1, 1) translate(-154.984723, -125.972432) "></path>
+            <path d="M161.10145,153.972432 L170.893123,153.972432 L193,54 L21,54 L43.1068769,153.972432 L52.8985503,153.972432 L45.963435,122.61023 L168.036565,122.61023 L161.10145,153.972432 Z" id="Rectangle-2" stroke-linecap="round" stroke-linejoin="round" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+            <path d="M194.611729,10.7556772 L213.102331,87.7258996 L0.897668696,87.7258996 L19.3882715,10.7556772 L194.611729,10.7556772 Z" id="Rectangle-2" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

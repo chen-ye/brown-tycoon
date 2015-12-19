@@ -1,8 +1,0 @@
-{
-	"rectangle": 0,
-	"trapezoid": 1,
-	"triangle": 4,
-	"small_triangle": 5,
-	"coffin": 3,
-	"weird": 2
-}
