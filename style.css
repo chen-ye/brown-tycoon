@@ -306,6 +306,7 @@ section > p, .reading, section:not(:first-child) h2 {
 	margin-left: auto;
 	margin-right: auto;
 	perspective: 400px;
+	transform-style: preserve-3d;
 }
 
 .card-view > .content {
