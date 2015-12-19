@@ -8,8 +8,7 @@
 		}
 
 		.star-drop {
-			animation-fill-mode: both;
-			animation: star-drop 0.7s ease-out;
+			animation: star-drop 0.7s ease-out both;
 			animation-delay: 1s;
 		}
 
@@ -19,8 +18,7 @@
 		}
 
 		.star-shadow {
-			animation-fill-mode: both;
-			animation: fade-in 0.7s ease-out;
+			animation: fade-in 0.7s ease-out both;
 			animation-delay: 1s;
 		}
 
@@ -35,38 +33,32 @@
 		}
 
 		.circle-container {
-			animation-fill-mode: both;
-			animation: appear 0.001s;
+			animation: appear 0.001s both;
 			animation-delay: 2.25s;
 		}
 
 		.circle-cover {
-			animation-fill-mode: both;
-			animation: hide 0.001s;
+			animation: hide 0.001s both;
 			animation-delay: 2.5s;
 		}
 
 		.star-text {
-			animation-fill-mode: both;
-			animation: appear 0.001s;
+			animation: appear 0.001s both;
 			animation-delay: 2.6s;
 		}
 
 		.tar-text {
-			animation-fill-mode: both;
-			animation: hide 0.001s;
+			animation: hide 0.001s both;
 			animation-delay: 2.7s;
 		}
 
 		.ar-text {
-			animation-fill-mode: both;
-			animation: hide 0.001s;
+			animation: hide 0.001s both;
 			animation-delay: 2.8s;
 		}
 
 		.r-text {
-			animation-fill-mode: both;
-			animation: hide 0.001s;
+			animation: hide 0.001s both;
 			animation-delay: 2.9s;
 		}
 		
