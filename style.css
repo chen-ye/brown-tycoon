@@ -377,3 +377,15 @@ section > p, .reading, section:not(:first-child) h2 {
 	display: block;
 	margin-top: 0.5em;
 }
+
+.card:after {
+	content: "Tap for more";
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+	font-size: x-small;
+	font-weight: bold;
+	text-transform: lowercase;
+	color: #555;
+	font-family: sans-serif;
+}
