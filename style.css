@@ -12,7 +12,7 @@ html, body {
 }
 
 body {
-	margin-bottom: 2em;
+	padding-bottom: 1em;
 }
 
 a, a:link {
@@ -116,11 +116,12 @@ section > p, .reading, section:not(:first-child) h2 {
 .image-set {
 	margin-top: 1em;
 	margin-bottom: 1em;
-	display: flex;
-	justify-content: center;
+	white-space: nowrap;
+	text-align: center;
 }
 
 .image-set > * {
+	display: inline-block;
 	border: 2px solid white;
 	box-sizing: border-box;
 }
