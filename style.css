@@ -73,6 +73,27 @@ section > p, .reading, section:not(:first-child) h2 {
 	clear: both;
 }
 
+/** GRAPHICS VERTICAL MARGINS */
+
+.full-width {
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+
+#intro {
+	margin-top: 2em;
+}
+
+@media screen and (min-width: 650px) {
+	.full-width {
+		margin-top: 5em;
+		margin-bottom: 5em;
+	}
+	#intro {
+		margin-top: 5em;
+	}
+}
+
 /** IN-MARGIN */
 
 .in-margin {
@@ -114,8 +135,6 @@ section > p, .reading, section:not(:first-child) h2 {
 /** IMAGE SETS */
 
 .image-set {
-	margin-top: 1em;
-	margin-bottom: 1em;
 	white-space: nowrap;
 	text-align: center;
 }
@@ -233,7 +252,7 @@ section > p, .reading, section:not(:first-child) h2 {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-.image-flow > div:not(:first-child) {
+.image-flow > .page:not(:first-child) {
 	display: none;
 }
 
@@ -258,6 +277,23 @@ section > p, .reading, section:not(:first-child) h2 {
 	font-size: small;
 	margin-bottom: 0;
 	font-family: sans-serif;
+}
+
+.image-flow .number {
+	/*color: #fe2b71;*/
+}
+
+.image-flow .progress-bar-container {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	background-color: rgba(184, 30, 63, 0.4);
+}
+
+.image-flow .progress-bar {
+	height: 4px;
+	background-color: rgba(254, 43, 113, 1);
 }
 
 .image-flow-hint {

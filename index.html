@@ -62,6 +62,10 @@
 			<li>Code to tie the object recognition and projection together—to let the objects on the table directly affect the image projected on its surface.</li>
 		</ul>
 		
+		<p>
+			We deliberately put off answering a crucial question — what the software would actually <em>do.</em> We wanted to build a blank slate, a piece of hardware that could support <em>all kinds</em> of interesting programs.
+		</p>
+		
 		<div class='reading'>
 			<div class='in-margin semi-decorative' data-disable-photo-link='true'>
 				<img src='Edge2.svg'/>
@@ -70,16 +74,16 @@
 		
 		<h2>The Wood</h2>
 		<p>
-			As a coder who knows nothing about materials, this was actually the most daunting challenge for me.
-			We originally aimed to build the table out of metal — but, pressed for time, I gathered a handful of wooden boards, cut them up into four pieces, and attached them together using a terrifyingly powerful instrument called a nail gun. Our table ended up being a bit <em>structurally unsound</em>, so I have no valuable guidance for anyone else trying to do this.</p>
+			As someone with zero furniture-building experience, the prospect of building an actual table was daunting, so I sketched out the simplest table I could imagine. Rather than four freestanding legs, we used four sides, two of which were shorter than the others, and didn't reach the floor. This made our table into a sort-of box, which did a good job of hiding some of the equipment inside. The fact that the long sides of the box didn't reach the floor made it seem more open and table-like, rather than some sort of mysterious column. It also allowed easy access to the bottom half of the table's inside, which was crucial for accessing the electronics inside.
+		</p>
 		
 		<p>
-			I <em>do</em> think the overall shape of our table was a good choice. Rather than four freestanding legs, we used four sides, two of which were shorter than the others, and didn't reach the floor. This made our table into a sort-of box, which did a good job of hiding some of the equipment inside. Meanwhile, the fact that the long sides of the box didn't reach the floor made it seem more open and table-like, rather than some sort of mysterious column—not to mention providing much-needed ease of access to the bottom half of the table's inside.
+			It took only a couple hours of band-sawing and nervous nail-gunning to transform two large slabs of wood into a decidedly <em>structurally unsound</em> piece of furniture. Satisfied enough, we moved on to the next challenge — building the tabletop itself.
 		</p>
 		
 		<h2>The Blurry-Surface Trick</h2>
 		<p>
-			How do we get the table to recognize what's placed on it? We considered placing a camera above the table, pointing down at its surface. This wasn't attractive because it'd involve assembling a separate piece of equipment <em>outside</em> the table. Instead, we chose to make the surface of the table <em>transparent,</em> with a camera <em>below the surface, pointing up.</em> This approach seemed like the right move, but introduced a couple challenges:
+			Getting the table to recognize objects placed on it required a bit of cleverness. We considered placing a camera above the table, pointing down at its surface. This wasn't attractive because it'd involve assembling a separate piece of equipment <em>outside</em> the table. Instead, we chose to make the surface of the table <em>transparent,</em> with a camera <em>below the surface, pointing up.</em> This seemed like the right approach, but introduced a couple challenges:
 		</p>
 		<ul class='reading'>
 			<li>How do we discriminate what's <em>on</em> the table's surface from what's <em>above</em> it?</li>
@@ -173,7 +177,7 @@
 		</p>
 		
 		<p>
-			Far cooler was Chén's app: a functional simulation of Brown University. We 3D-printed noteworthy campus buildings (and laser-cut sillhouettes of the rest in cardboard) and built an <a href='https://en.wikipedia.org/wiki/Agent-based_model'>agent simulation</a> of students inhabiting a campus that players <em>create</em> by <em>placing buildings onto the table.</em> Students have dorms and classes, and they need food and exercise — the player's goal is to place buildings optimally to maximize students' happiness.
+			Far more interesting was Chén's app: a functional simulation of Brown University. We 3D-printed noteworthy campus buildings (and laser-cut sillhouettes of the rest in cardboard) and built an <a href='https://en.wikipedia.org/wiki/Agent-based_model'>agent simulation</a> of students inhabiting a campus that players <em>create</em> by <em>placing buildings onto the table.</em> Students have dorms and classes, and they need food and exercise — the player's goal is to place buildings optimally to maximize students' happiness.
 		</p>
 		
 		<div class='mobile-horiz-scroll'>
