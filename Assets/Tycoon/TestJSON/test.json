@@ -11,7 +11,7 @@
       "y": 0.1
          },
     {
-      "key": "ghb",
+      "key": "ghc",
       "type": "dorm",
       "width": 0.05,
       "length": 0.02,
@@ -20,7 +20,7 @@
       "y": 0.2
          },
     {
-      "key": "ghb",
+      "key": "ghd",
       "type": "dorm",
       "width": 0.05,
       "length": 0.02,
@@ -29,7 +29,7 @@
       "y": 0.3
          },
     {
-      "key": "ghb",
+      "key": "ghe",
       "type": "dorm",
       "width": 0.05,
       "length": 0.02,
