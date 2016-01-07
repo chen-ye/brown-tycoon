@@ -29,6 +29,9 @@ namespace Tycoon {
         public GameObject Dorm;
 
         public string url = "http://127.0.0.1:59939/Assets/Tycoon/TestJSON/test.json";
+        public string debugUrl = "https://github.com/chen-ye/brown-tycoon/raw/master/Assets/Tycoon/TestJSON/test.json";
+
+        public bool debugMode = false;
 
         public Dictionary<string, BuildingData> buildingDataMap;
         public Dictionary<string, GameObject> buildingObjectMap;
@@ -114,7 +117,7 @@ namespace Tycoon {
         {
             while(true)
             {
-                WWW www = new WWW(url);
+                WWW www = debugMode ? new WWW(debugUrl) : new WWW(url);
                 yield return www;
                 if (www.error == null)
                 {

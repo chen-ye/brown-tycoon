@@ -1,0 +1,12 @@
+Adobe After Effects v13.6.1 Windows 64 render log for project “Light Table Animation.aep”
+
+Rendering started on 1/6/2016 at 6:54:15 PM
+
+  1/6/2016 6:54:15 PM: Starting composition “Brown University Tycoon 2016 1_6_2016 6_21_12 PM 2”.
+
+  Output To: C:\Users\Chen Ye\Documents\GitHub\brown-tycoon\static\Preview Animation\Brown University Tycoon 2016 1_6_2016 6_21_12 PM 2\Preview Animation_[#####].png    1/6/2016 6:55:29 PM: Finished composition “Brown University Tycoon 2016 1_6_2016 6_21_12 PM 2”.
+
+
+  Total Time Elapsed: 1 Min, 13 Sec
+Log closed on 1/6/2016 at 6:55:29 PM
+
